@@ -1480,5 +1480,12 @@ limitations under the License.
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>
     </xsl:template>
-   
+
+
+
+    <xsl:function name="exsltCommon:node-set" as="node()">
+        <xsl:param name="n" as="node()"/>
+        <xsl:sequence select="$n"/>
+    </xsl:function>
+
 </xsl:stylesheet>
