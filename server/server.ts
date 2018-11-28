@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 
 import * as homeController from './controllers/home.controller';
 
-import {getDefault} from './controllers/converter.controller';
+import {getDefault,testStep2} from './controllers/converter.controller';
 
 
 
@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);
 app.get('/stl', getDefault);
+app.get('/step2', testStep2);
+
 
 app.listen(app.get('port'), () => {
   console.log(('App is running at http://localhost:%d in %s mode'),

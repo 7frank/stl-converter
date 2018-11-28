@@ -1,10 +1,17 @@
 import { Options, PythonShell } from "python-shell";
 import * as path from "path";
 
-function stl2stlxml(inputFile, outputFile, success) {
-  // const pythonScript= path.resolve(__dirname,'stl2stlxml.py');
-  // TODO the paths are a mess build with webpack maybe
-    console.log("--------------------",__dirname)
+
+/**
+ * TODO on windows the array returned by success is null
+ *
+ *
+ * @param inputFile
+ * @param outputFile
+ * @param success
+ */
+function stl2stlxml(inputFile, outputFile, success:(data:string[])=>void) {
+
   const root = path.resolve(__dirname, "../../server/converter/");
   const files = path.resolve(root, "./files");
   const pythonScript = path.resolve(root, "./stl2stlxml.py");
@@ -12,10 +19,12 @@ function stl2stlxml(inputFile, outputFile, success) {
   inputFile = path.resolve(files, inputFile);
   outputFile = path.resolve(files, outputFile);
 
+    outputFile="out.xml"
+
   const options: Options = {
     args: [
       inputFile,
-      "-x "+outputFile,
+    //  "-x "+outputFile,
       "-p",
       "-s"
     ],

@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as fs from "fs";
 
 import { stl2stlxml } from "../converter/convert";
 import { stlxml2ebutt } from "../converter/stlxml2ebutt";
@@ -28,5 +29,19 @@ export function getDefault(_req: express.Request, res: express.Response) {
   });
 
   res.send("converter");
+}
+
+
+
+export function testStep2(_req: express.Request, res: express.Response) {
+    // TODO fix paths with tsc build option
+    //meanwhile assume "." to be  "scr/converter/files/"
+
+    const outputFile = "./server/converter/files/out/static.stl.xml";
+    const dataString = fs.readFileSync(outputFile, "utf8");
+        stlxml2ebutt(dataString, "./server/converter/STLXML2EBU-TT.xslt");
+
+
+    res.send("converter");
 }
 
