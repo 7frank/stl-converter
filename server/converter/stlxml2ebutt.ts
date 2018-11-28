@@ -16,7 +16,7 @@ function stlxml2ebutt(xmlString, xsltFile) {
   // var transform = require('Saxon');
   // var outXmlString = TransformFromStrings(xmlString,xsltString);
 
-  fs.writeFile("./files/ebutt-out.xml", outXmlString, function(err) {
+  fs.writeFile("./files/out/ebutt-out.xml", outXmlString, function(err) {
     if (err) {
       return console.log(err);
     }
