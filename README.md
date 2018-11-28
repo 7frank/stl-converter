@@ -1,27 +1,17 @@
-# express-ts
+# overview
+This project aims to generate a server or cli that converts binary stl files into ebu-tt formatted xml files.
 
-Express using TypeScript starter project.
 
-This project was created following guides and best practises detailled below.
+# TODO
+* functional requirements
 
-## Express
-Guides and best practises:
-- [Application skeleton generator](https://expressjs.com/en/starter/generator.html)
-- [TypeScript - Express starter project](https://github.com/Microsoft/TypeScript-Node-Starter#typescript-node-starter)
-- [MDN - Express starter project](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs)
-- [Security best practises](https://expressjs.com/en/advanced/best-practice-security.html)
-- [Performance best practises](https://expressjs.com/en/advanced/best-practice-performance.html)
 
-## Docker with Node
-Guides and best practises:
-- [nodejs.org](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/)
-- [docker-node](https://github.com/nodejs/docker-node)
+# milestones
+* convert stl to stlxml
+     
+* convert stlxml to ebu-tt
 
-## Chrome
-Guides:
-- [inspector](https://nodejs.org/en/docs/inspector/)
+* validate result
 
-## VS Code
-Guides:
-- [Node debugging](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)
-- [Debugging TypeScript in Docker](https://github.com/Microsoft/vscode-recipes/tree/master/Docker-TypeScript)
+* test with a bigger/diverse set of subtitles
+
