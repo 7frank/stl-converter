@@ -1,0 +1,3 @@
+xmllint --noout --schema ebutt.xsd video-videoSubtitle.xml
+
+xmllint --noout --schema ebutt.xsd rss-videoSubtitle.xml

@@ -74,7 +74,9 @@ export async function stl2ebu(_req: express.Request, res: express.Response) {
 
     console.log("step 1: stl-stlxml")
 
-    const dataStream = await stl2stlxml(inputFile);
+    const dataStream = await stl2stlxml(inputFile) as any;
+
+    const stlxmlOutputPath = `./server/converter/files/out/${base}.stl.xml`
 
     const ebuttOutputPath = `./server/converter/files/out/${base}.ebutt.xml`
     const xsl = "./server/converter/STLXML2EBU-TT.xslt"
@@ -82,10 +84,14 @@ export async function stl2ebu(_req: express.Request, res: express.Response) {
 
     function responseCallback(report: any) {
 
+        var fullUrl = _req.protocol + '://' + _req.get('host') //+ req.originalUrl;
+
         const obj = {
             input: inputFile,
             xslt: xsl,
             output: ebuttOutputPath,
+            outputURL: fullUrl+"/out/"+path.basename(ebuttOutputPath),
+            stlxml: fullUrl+"/out/"+path.basename(stlxmlOutputPath),
             valid: report.valid,
             messages: report.messages
         }
@@ -93,8 +99,18 @@ export async function stl2ebu(_req: express.Request, res: express.Response) {
 
     }
 
+    console.log("step 1.5: backup stlxml")
+    const writeStream = fs.createWriteStream(stlxmlOutputPath)
+    writeStream.on('error', console.error);
+    dataStream.pipe(writeStream)
+
+
+
     console.log("step 2: stlxml-ebu")
     stlxml2ebuttStream(dataStream, xsl, ebuttOutputPath).on('data', () => {
+
+
+
 
         const ebuttXSD = `./server/converter/validate/ebutt.xsd`
         console.log("step 3: validate-ebu")
