@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 
 import * as homeController from './controllers/home.controller';
 
-import {getDefault,testStep2} from './controllers/converter.controller';
+import {stl2xml,stlxml2ebu, stl2ebu} from './controllers/converter.controller';
 
 
 
@@ -16,8 +16,9 @@ app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);
-app.get('/stl', getDefault);
-app.get('/step2', testStep2);
+app.get('/stl-xml', stl2xml);
+app.get('/xml-ebu', stlxml2ebu);
+app.get('/stl-ebu', stl2ebu);
 
 
 app.listen(app.get('port'), () => {
