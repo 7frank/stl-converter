@@ -12,11 +12,11 @@ import {Response} from "express";
 import {validate} from "../converter/validate/validate";
 
 
-class Name {
-    constructor(private filename: string) {
-    }
-}
 
+
+/**
+ * TODO refactor into test case for stl => stlxml
+ */
 
 // tslint:disable:variable-name
 export function stl2xml(_req: express.Request, res: express.Response) {
@@ -38,7 +38,9 @@ export function stl2xml(_req: express.Request, res: express.Response) {
 
 
 }
-
+/**
+ * TODO refactor into test case for stlxml => ebu
+ */
 
 export function stlxml2ebu(_req: express.Request, res: express.Response) {
 
@@ -63,7 +65,11 @@ export function stlxml2ebu(_req: express.Request, res: express.Response) {
 
 }
 
-
+/**
+ * Controller that uses the whole work flow from stl => stlxml => backup => ebutt
+ * @param _req
+ * @param res
+ */
 // tslint:disable:variable-name
 export async function stl2ebu(_req: express.Request, res: express.Response) {
     const inputFile = "./stl/test.stl";

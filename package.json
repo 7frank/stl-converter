@@ -1,7 +1,7 @@
 {
-  "name": "api-skelpi",
-  "version": "0.1.0",
-  "description": "skeleton API in Typescript",
+  "name": "stl-converter",
+  "version": "0.2.0",
+  "description": "STL to EBU converter as a service",
   "main": "./dist/server.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anthillsolutions/api-skel.git"
+    "url": "git+https://github.com/7frank/stl-converter.git"
   },
-  "author": "Pierre Repetto-Andipatin",
-  "license": "MIT",
+  "author": "Frank Reimann",
+  "license": "All rights reserved",
   "bugs": {
-    "url": "https://github.com/anthillsolutions/api-skel/issues"
+    "url": "https://github.com/7frank/stl-converter/issues"
   },
-  "homepage": "https://github.com/anthillsolutions/api-skel#readme",
+  "homepage": "https://github.com/7frank/stl-converter#readme",
   "jest": {
     "globals": {
       "ts-jest": {

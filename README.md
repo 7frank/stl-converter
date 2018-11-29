@@ -8,6 +8,8 @@ This project aims to generate a server or cli that converts binary stl files int
 
 # TODO
 * functional requirements
+* tests
+* validator might fail because of proxy
 
 
 # milestones
