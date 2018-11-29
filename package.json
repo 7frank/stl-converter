@@ -85,6 +85,8 @@
     "express": "^4.16.2",
     "pm2": "^2.7.1",
     "python-shell": "^1.0.6",
-    "saxon-stream2": "0.0.1"
+    "saxon-stream2": "0.0.1",
+    "xmllint": "^0.1.1",
+    "xsd-schema-validator": "^0.6.0"
   }
 }

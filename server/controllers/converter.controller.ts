@@ -9,7 +9,7 @@ import {stlxml2ebutt, stlxml2ebuttStream} from "../converter/stlxml2ebutt";
 import * as Stream from "stream";
 import {Request} from "express";
 import {Response} from "express";
-
+import {validate} from "../converter/validate/validate";
 
 
 class Name {
@@ -41,8 +41,6 @@ export function stl2xml(_req: express.Request, res: express.Response) {
 
 
 export function stlxml2ebu(_req: express.Request, res: express.Response) {
-    // TODO fix paths with tsc build option
-    //meanwhile assume "." to be  "scr/converter/files/"
 
     const input_outputFile = "./server/converter/files/out/static.stl.xml";
     const dataString = fs.readFileSync(input_outputFile, "utf8");
@@ -70,11 +68,9 @@ export function stlxml2ebu(_req: express.Request, res: express.Response) {
 export async function stl2ebu(_req: express.Request, res: express.Response) {
     const inputFile = "./stl/test.stl";
 
-    console.log("converting: "+inputFile)
+    console.log("converting: " + inputFile)
 
     const base = path.basename(inputFile, ".stl")
-
-    const outputFile = `./out/${base}.stlxml.xml`;
 
     console.log("step 1: stl-stlxml")
 
@@ -84,15 +80,26 @@ export async function stl2ebu(_req: express.Request, res: express.Response) {
     const xsl = "./server/converter/STLXML2EBU-TT.xslt"
 
 
+    function responseCallback(report: any) {
+
+        const obj = {
+            input: inputFile,
+            xslt: xsl,
+            output: ebuttOutputPath,
+            valid: report.valid,
+            messages: report.messages
+        }
+        res.json(obj);
+
+    }
+
     console.log("step 2: stlxml-ebu")
     stlxml2ebuttStream(dataStream, xsl, ebuttOutputPath).on('data', () => {
 
-        res.json({
-            input: outputFile,
-            xslt: xsl,
-            stlxml: outputFile,
-            output: ebuttOutputPath
-        });
+        const ebuttXSD = `./server/converter/validate/ebutt.xsd`
+        console.log("step 3: validate-ebu")
+        validate(ebuttOutputPath, ebuttXSD).then(responseCallback).catch(console.error)
+
 
     });
 
