@@ -9,7 +9,7 @@
     "test": "jest --forceExit",
     "test-ci": "npm test && cat ./coverage/lcov.info | coveralls",
     "start": "node ./dist/server.js",
-    "start:dev": "ts-node --inspect ./server/server.ts",
+    "start:dev": "ts-node --inspect=9229 ./server/server.ts",
     "example-stl2stlxml": "python ./server/converter/stl2stlxml.py ./server/converter/files/stl/test.stl -x ./server/converter/files/out/test.stl.xml -p -s",
     "example-stlxml2ebutt": "java -jar ./saxon99he.jar -s:./server/converter/files/out/static.stl.xml -xsl:./server/converter/STLXML2EBU-TT.xslt -o:./server/converter/files/out/static.ebutt.xml"
   },

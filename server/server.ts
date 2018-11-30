@@ -12,6 +12,15 @@ dotenv.config();
 
 const app = express();
 
+app.all('/*', function(req, response, next) {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    response.setHeader("Access-Control-Allow-Headers", "x-ijt, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    next();
+});
+
+
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,6 +28,16 @@ app.get('/', homeController.index);
 app.get('/stl-xml', stl2xml);
 app.get('/xml-ebu', stlxml2ebu);
 app.get('/stl-ebu', stl2ebu);
+
+app.get('/queue',function(req,res){
+
+    // TODO the files will be loaded via batch similar to cors
+    const obj = { files:[{id:1,name:'test.stl'},{id:1,name:'test.stl'},{id:1,name:'test.stl'}]
+    }
+    res.json(obj);
+});
+
+
 
 
 app.use("/out", express.static(path.join(__dirname , './converter/files/out')));

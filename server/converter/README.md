@@ -11,6 +11,10 @@
 * https://github.com/fiduswriter/xslt-processor
     * WIP FIXME
 * https://glitch.com/edit/#!/third-replace    
+
+
+# TODO 
+* the framework itself does provide different stlxml-ebu-tt conversion steps
     
 
 
