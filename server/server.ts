@@ -5,6 +5,7 @@ import * as path from 'path'
 import * as homeController from './controllers/home.controller';
 
 import {stl2xml,stlxml2ebu, stl2ebu} from './controllers/converter.controller';
+import {queuesSocket} from "./socket/queues";
 
 
 
@@ -32,7 +33,7 @@ app.get('/stl-ebu', stl2ebu);
 app.get('/queue',function(req,res){
 
     // TODO the files will be loaded via batch similar to cors
-    const obj = { files:[{id:1,name:'test.stl'},{id:1,name:'test.stl'},{id:1,name:'test.stl'}]
+    const obj = { files:[{id:1,name:'test123.stl',progress:0.5},{id:3,name:'testqwe.stl',progress:1},{id:3,name:'testasd.stl',progress:0.2}]
     }
     res.json(obj);
 });
@@ -44,11 +45,30 @@ app.use("/out", express.static(path.join(__dirname , './converter/files/out')));
 app.use("/stl", express.static( path.join(__dirname ,'./converter/files/stl')));
 
 
-
+/*
 app.listen(app.get('port'), () => {
   console.log(('App is running at http://localhost:%d in %s mode'),
     app.get('port'), app.get('env'));
   console.log('Press CTRL-C to stop\n');
-});
+});*/
+
+
+const http = require('http')
+//import * as socketServer from 'socket.io';
+
+
+const server = http.createServer(app);
+//const io = socketServer(serve);
+
+queuesSocket(server);
+
+server.listen(app.get('port'),()=> {
+    console.log(('App is running at http://localhost:%d in %s mode'),
+        app.get('port'), app.get('env'));
+    console.log('Press CTRL-C to stop\n');
+
+})
+
+
 
 module.exports = app;
