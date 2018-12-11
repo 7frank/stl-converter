@@ -26,6 +26,7 @@ app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);
+app.get('/Readme', homeController.readme);
 app.get('/stl-xml', stl2xml);
 app.get('/xml-ebu', stlxml2ebu);
 app.get('/stl-ebu', stl2ebu);

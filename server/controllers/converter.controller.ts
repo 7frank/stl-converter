@@ -13,6 +13,12 @@ import {validate} from "../converter/validate/validate";
 
 
 
+export function getOrigin(_req: express.Request,path =""):string
+{
+ return _req.protocol + '://' + _req.get('host')+path
+
+}
+
 
 /**
  * TODO refactor into test case for stl => stlxml
@@ -90,7 +96,7 @@ export async function stl2ebu(_req: express.Request, res: express.Response) {
 
     function responseCallback(report: any) {
 
-        var fullUrl = _req.protocol + '://' + _req.get('host') //+ req.originalUrl;
+        var fullUrl = getOrigin(_req) //+ req.originalUrl;
 
         const obj = {
             input: inputFile,
