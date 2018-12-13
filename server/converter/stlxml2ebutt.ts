@@ -102,6 +102,7 @@ interface XSLTTransformInterface {
     id:string;
     file:string;
     stream?:NodeJS.ReadWriteStream;
+    validate?:boolean;
 }
 
 function xsltstreams():Array<XSLTTransformInterface>
@@ -109,7 +110,7 @@ function xsltstreams():Array<XSLTTransformInterface>
     const xsltStuff:Array<XSLTTransformInterface>=[
         {id:"STLXML_to_EBUTT",file:"./xslt/STLXML2EBU-TT.xslt"},
         {id:"EBU-TT2EBU-TT-D",file:"./xslt/EBU-TT2EBU-TT-D.xslt"},
-        {id:"EBU-TT-D2EBU-TT-D-Basic-DE",file:"./xslt/EBU-TT-D2EBU-TT-D-Basic-DE.xslt"}
+        {id:"EBU-TT-D2EBU-TT-D-Basic-DE",file:"./xslt/EBU-TT-D2EBU-TT-D-Basic-DE.xslt",validate:true}
     ]
 
     xsltStuff.forEach(o => {

@@ -223,7 +223,8 @@ export async function streamTest(_req: express.Request, res: express.Response,) 
 
         const parsed = path.parse(o.file)
         const targetFilename = parsedSource.name+"."+parsed.name+".xml"
-        const writeStream=fs.createWriteStream(path.resolve(targetPath,targetFilename))
+        const target=path.resolve(targetPath,targetFilename)
+        const writeStream=fs.createWriteStream(target)
 
 
 
@@ -239,7 +240,26 @@ export async function streamTest(_req: express.Request, res: express.Response,) 
 
 
 
-        o.stream.pipe(getProgressSpy(o.id)).pipe(writeStream)
+        o.stream.pipe(getProgressSpy(o.id)).pipe(writeStream).on("finish",function(){
+
+            if (o.validate) {
+                console.log('written - validating')
+
+
+                validate(target, ebuttXSD).then(
+                    function responseCallback(report: any) {
+
+                        const obj = {
+                            input: mFilePath,
+                            valid: report.valid,
+                            messages: report.messages
+                        }
+                        console.log(obj);
+
+                    }).catch(console.error)
+            }
+            else  console.log('written')
+        })
 
         return o.stream
 
