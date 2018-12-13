@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path'
 import * as homeController from './controllers/home.controller';
 
-import {stl2xml,stlxml2ebu, stl2ebu} from './controllers/converter.controller';
+import {stl2xml, stlxml2ebu, stl2ebu, streamTest} from './controllers/converter.controller';
 import {queuesSocket} from "./socket/queues";
 
 
@@ -30,6 +30,8 @@ app.get('/Readme', homeController.readme);
 app.get('/stl-xml', stl2xml);
 app.get('/xml-ebu', stlxml2ebu);
 app.get('/stl-ebu', stl2ebu);
+
+app.get('/stream', streamTest);
 
 app.get('/queue',function(req,res){
 

@@ -22,3 +22,16 @@ export function validate(xmlFile, xsdFile) {
  })
 
 }
+
+export function validateStream(xmlStream, xsdFile) {
+
+
+       return validator.validateXML(xmlStream, xsdFile,function (err, result) {
+            if (err) {
+                console.error(err);
+            }
+
+           console.log(result); // true
+       })
+
+}
