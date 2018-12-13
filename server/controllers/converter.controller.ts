@@ -4,12 +4,9 @@ import * as path from "path";
 
 
 import {stl2stlxml} from "../converter/convert";
-import {stlxml2ebutt, stlxml2ebuttStream, xsltstreams} from "../converter/stlxml2ebutt";
+import {xsltstreams} from "../converter/stlxml2ebutt";
 
-import * as Stream from "stream";
-import {Request} from "express";
-import {Response} from "express";
-import {validate, validateStream} from "../converter/validate/validate";
+import {validate, createXMLValidationStream} from "../converter/validate/validate";
 import {Lower, renderer, Upper, xformer} from "../converter/transform";
 
 
@@ -19,155 +16,16 @@ export function getOrigin(_req: express.Request, path = ""): string {
 }
 
 
-/**
- * TODO refactor into test case for stl => stlxml
- */
-
-// tslint:disable:variable-name
-export function stl2xml(_req: express.Request, res: express.Response) {
-
-    const inputFile = "./stl/test.stl";
-
-    const base = path.basename(inputFile)
-
-    const outputFile = `./out/${base}-stlxml.xml`;
-    stl2stlxml(inputFile).then(function (dataStream) {
-        res.json({
-            input: inputFile,
-            output: outputFile,
-        });
-    }).catch(e => res.json({
-        error: e.message,
-
-    }));
-
-
-}
-
-/**
- * TODO refactor into test case for stlxml => ebu
- */
-
-export function stlxml2ebu(_req: express.Request, res: express.Response) {
-
-    const input_outputFile = "./server/converter/files/out/static.stl.xml";
-    const dataString = fs.readFileSync(input_outputFile, "utf8");
-    // stlxml2ebuttSAXON(dataString, "./server/converter/STLXML2EBU-TT.xslt");
-
-    const ebuttOutputPath = "./server/converter/files/out/static5.ebutt.xml"
-
-
-    const xsl = "./server/converter/xslt/STLXML2EBU-TT.xslt"
-
-
-    stlxml2ebutt(input_outputFile, xsl, ebuttOutputPath).on('data', () => {
-
-        res.json({
-            input: input_outputFile,
-            xslt: xsl,
-            output: ebuttOutputPath,
-        });
-
-    });
-
-
-}
-
-/**
- * Controller that uses the whole work flow from stl => stlxml => backup => ebutt
- * @param _req
- * @param res
- */
-// tslint:disable:variable-name
-export async function stl2ebu(_req: express.Request, res: express.Response,) {
-    //const mFilePath = "./stl/test.stl";
-
-
-    const inputFile = "../../tests/stl/Test 1.stl";
-
-
-    const mFilePath = path.resolve(__dirname, inputFile)
-    console.log("converting: " + mFilePath)
-    if (!fs.existsSync(mFilePath)) {
-
-        throw new Error("File_NOT_FOUND")
-
-    }
-
-
-    const base = path.basename(mFilePath, ".stl")
-
-    console.log("step 1: stl-stlxml")
-
-    const dataStream = await stl2stlxml(mFilePath) as any;
-
-    const stlxmlOutputPath = `./server/converter/files/out/${base}.stl.xml`
-
-    const ebuttOutputPath = `./server/converter/files/out/${base}.ebutt.xml`
-
-
-    const stlxml_ebutt_xsl = "./server/converter/xslt/STLXML2EBU-TT.xslt"
-    const ebutt_ebuttd_xsl = "./server/converter/EBU-TT2EBU-TT-D.xslt"
-    const ebuttd_ebuttd_basic_de_xsl = "./server/converter/EBU-TT-D2EBU-TT-D-Basic-DE.xslt"
-
-
-    function responseCallback(report: any) {
-
-        var fullUrl = getOrigin(_req) //+ req.originalUrl;
-
-        const obj = {
-            input: mFilePath,
-            xslt: stlxml_ebutt_xsl,
-            output: ebuttOutputPath,
-            outputURL: fullUrl + "/out/" + path.basename(ebuttOutputPath),
-            stlxml: fullUrl + "/out/" + path.basename(stlxmlOutputPath),
-            valid: report.valid,
-            messages: report.messages
-        }
-        res.json(obj);
-
-    }
-
-    console.log("step 1.5: backup stlxml")
-    const writeStream = fs.createWriteStream(stlxmlOutputPath)
-    writeStream.on('error', console.error);
-    dataStream.pipe(writeStream)
-
-
-    console.log("step 2: stlxml-ebutt")
-    /*stlxml2ebuttStream(dataStream, xsl, ebuttOutputPath).on('data', () => {
-
-
-
-
-        const ebuttXSD = `./server/converter/validate/ebutt.xsd`
-        console.log("step 3: validate-ebu")
-        validate(ebuttOutputPath, ebuttXSD).then(responseCallback).catch(console.error)
-
-
-    });*/
-
-    stlxml2ebuttStream(dataStream, stlxml_ebutt_xsl, ebuttOutputPath).on('data', () => {
-
-        const ebuttXSD = `./server/converter/validate/ebutt.xsd`
-        console.log("step 3: validate-ebu")
-        validate(ebuttOutputPath, ebuttXSD).then(responseCallback).catch(console.error)
-
-    });
-
-
-}
-
 import {pipeline, duplex, pipe, finished} from "mississippi";
 
-function getProgressSpy(id: string) {
+function createProgressSpyStream(id: string) {
     const progress = require('progress-stream');
 
     //const  stat = fs.statSync(filename);
     const str = progress({
 
         //  length: stat.size,
-        time: 100 /* ms */
+        time: 10 /* ms */
     });
     str.on('progress', function (progress) {
         console.log("id:" + id, progress.percentage);
@@ -177,22 +35,141 @@ function getProgressSpy(id: string) {
 }
 
 /**
+ *
+ * Controller that uses the whole work flow from stl => stlxml => backup => ebutt
+ *
  * - read file
  * - generate stlxml
- *
  * - transform xml file n times via xslt and each time write to file system and validate
+ *
+ *  TODO only write to filesystem if next transformation step does fail ?
  *
  */
 
 
 
 
-export async function streamTest(_req: express.Request, res: express.Response,) {
-
+export async function stl2ebu(_req: express.Request, res: express.Response) {
 
 
     //const inputFile = "../converter/files/stl/test.stl";
     const inputFile = "../../tests/stl/Test 1.stl";
+
+    convertFile(inputFile, function (err) {
+        if (err)
+            res.send('pipe error!' + err.message)
+    }, function (report: any) {
+        res.json(report)
+    })
+}
+
+
+enum TransformationState {
+    none="none",
+    queued="queued",
+    progress="progress",
+    converted="converted",
+    validated="validated"
+
+
+}
+
+
+const transformationPipe: Map<string, TransformationState> = new Map()
+
+
+export async function stl2ebu_batch(_req: express.Request, res: express.Response) {
+
+
+    //const inputFile = "../converter/files/stl/test.stl";
+    const inputFiles = [
+        "../../tests/stl/Test 1.stl",
+        "../../tests/stl/Test 2.stl",
+        "../../tests/stl/Test 3.stl"
+    ];
+
+    // filter only new entries that are not already at least queued
+    const newEntries = inputFiles.filter(filename => !transformationPipe.get(filename) || transformationPipe.get(filename) == TransformationState.none)
+
+
+    const currentStates = inputFiles.map(filename => {
+
+        let val = transformationPipe.get(filename)
+
+        if (val === undefined) {
+            val = TransformationState.none
+
+        }
+        transformationPipe.set(filename, val)
+
+        return {filename,state:val}
+
+
+    })
+
+
+    const withValidation = inputFile => {
+        return new Promise((resolve, reject) => {
+
+                convertFile(inputFile, function (err) {
+                    if (err)
+                        reject(err)
+
+                    transformationPipe.set(inputFile,TransformationState.converted)
+
+                }, function (report: any) {
+                    resolve(report)
+
+                    transformationPipe.set(inputFile,TransformationState.validated)
+
+                })
+            }
+        )
+    }
+
+
+    const withoutValidation = inputFile => {
+        return new Promise((resolve, reject) => {
+
+                convertFile(inputFile, function (err) {
+
+                    if (err)
+                        reject(err)
+                    else
+                        resolve(err)
+
+                    transformationPipe.set(inputFile,TransformationState.converted)
+
+                })
+            }
+        )
+    }
+
+    newEntries.forEach(filename => transformationPipe.set(filename, TransformationState.queued))
+
+    const promises = newEntries.map(withValidation)
+
+
+    Promise.all(promises).then(function (values) {
+
+        const response = newEntries.map((filename, i) => ({result: values[i], filename}))
+
+        //.map(f => getOrigin(_req,f))
+        // TODO have meaningful output even without validation
+
+
+
+        console.log("Promise all:", response)
+    })
+
+
+    res.json(currentStates)
+
+
+}
+
+
+async function convertFile(inputFile: string, onFinished: Function, onValidated?: Function) {
 
 
     const mFilePath = path.resolve(__dirname, inputFile)
@@ -211,8 +188,8 @@ export async function streamTest(_req: express.Request, res: express.Response,) 
 
     // create director
     const parsedSource = path.parse(mFilePath)
-    const targetPath=path.resolve(parsedSource.dir,"../out/")
-    if (!fs.existsSync(targetPath)){
+    const targetPath = path.resolve(parsedSource.dir, "../out/")
+    if (!fs.existsSync(targetPath)) {
         fs.mkdirSync(targetPath);
     }
 
@@ -220,64 +197,51 @@ export async function streamTest(_req: express.Request, res: express.Response,) 
     const xsltTransformationStreams = xsltstreams().map(o => {
 
 
-
         const parsed = path.parse(o.file)
-        const targetFilename = parsedSource.name+"."+parsed.name+".xml"
-        const target=path.resolve(targetPath,targetFilename)
-        const writeStream=fs.createWriteStream(target)
-
-
+        const targetFilename = parsedSource.name + "." + parsed.name + ".xml"
+        const target = path.resolve(targetPath, targetFilename)
+        const writeStream = fs.createWriteStream(target)
 
 
         const ebuttXSD = `./server/converter/validate/ebutt.xsd`
-        // TODO pipe...
-       // const xmlStream = fs.createReadStream(path.resolve(targetPath,targetFilename));
-       //  const mValidateStream= validateStream(xmlStream, ebuttXSD)
 
-        // TODO o.stream//.pipe(writeFile)//.pipe(validate).pipe(writeValidateFile)
+        o.stream.pipe(createProgressSpyStream(o.id))
+        // .pipe(createXMLValidationStream(ebuttXSD)) //TODO make validation via pipe
 
-        //o.stream.pipe(getProgressSpy(o.id)).pipe(writeStream)//.pipe(mValidateStream)
+            .pipe(writeStream)
 
 
+            .on("finish", function () {
+                console.log('written output')
+                if (o.validate && onValidated) {
+                    console.log('validating result')
 
-        o.stream.pipe(getProgressSpy(o.id)).pipe(writeStream).on("finish",function(){
 
-            if (o.validate) {
-                console.log('written - validating')
-
-
-                validate(target, ebuttXSD).then(
-                    function responseCallback(report: any) {
+                    validate(target, ebuttXSD).then(function responseCallback(report: any) {
 
                         const obj = {
                             input: mFilePath,
+                            output: target,
                             valid: report.valid,
                             messages: report.messages
                         }
-                        console.log(obj);
+                        onValidated(obj);
 
-                    }).catch(console.error)
-            }
-            else  console.log('written')
-        })
+                    }).catch(console.error)//TODO error handling
+                } else console.log('NOT validating result')
+            })
+
 
         return o.stream
 
     })
 
     // pipe all above - and return to client
-    const all=pipe(dataStream, ...xsltTransformationStreams)
+    const all = pipe(dataStream, ...xsltTransformationStreams)
 
-    finished(all, function (err) {
-        if (err)
-            res.send('pipe error!' + err.message)
-        else
-            res.send("ok")
-    })
+    finished(all, onFinished)
 
 
 }
-
-
 
 

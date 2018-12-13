@@ -84,6 +84,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "mississippi": "^3.0.0",
+    "pipe-validation-stream": "^1.0.10",
     "pm2": "^2.7.1",
     "progress-stream": "^2.0.0",
     "python-shell": "^1.0.6",
