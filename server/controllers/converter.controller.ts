@@ -48,29 +48,23 @@ function createProgressSpyStream(id: string) {
 
 
 
+interface STLTransformationResult {
+}
 
-export async function stl2ebu(_req: express.Request, res: express.Response) {
+enum TransformationState {
+    none = "none",
+    queued = "queued",
+    progress = "progress",
+    converted = "converted",
+    validated = "validated"
 
 
-    //const inputFile = "../converter/files/stl/test.stl";
-    const inputFile = "../../tests/stl/Test 1.stl";
-
-    convertFile(inputFile, function (err) {
-        if (err)
-            res.send('pipe error!' + err.message)
-    }, function (report: any) {
-        res.json(report)
-    })
 }
 
 
-enum TransformationState {
-    none="none",
-    queued="queued",
-    progress="progress",
-    converted="converted",
-    validated="validated"
-
+interface Transformation {
+    state: TransformationState;
+    result: STLTransformationResult;
 
 }
 
@@ -78,91 +72,181 @@ enum TransformationState {
 const transformationPipe: Map<string, TransformationState> = new Map()
 
 
-export async function stl2ebu_batch(_req: express.Request, res: express.Response) {
+/**
+ * potential use case with validation
+ * @param inputFile
+ */
+
+const withValidation = inputFile => {
+    return new Promise((resolve, reject) => {
+
+            convertFile(inputFile, function (err) {
+                if (err)
+                    reject(err)
+
+                transformationPipe.set(inputFile, TransformationState.converted)
+
+            }, function (report: any) {
+                resolve(report)
+
+                transformationPipe.set(inputFile, TransformationState.validated)
+
+            })
+        }
+    )
+}
 
 
-    //const inputFile = "../converter/files/stl/test.stl";
-    const inputFiles = [
-        "../../tests/stl/Test 1.stl",
-        "../../tests/stl/Test 2.stl",
-        "../../tests/stl/Test 3.stl"
-    ];
+/**
+ * potential use case without validation
+ * @param inputFile
+ */
+const withoutValidation = inputFile => {
+    return new Promise((resolve, reject) => {
+
+            convertFile(inputFile, function (err) {
+
+                if (err)
+                    reject(err)
+                else
+                    resolve(err)
+
+                transformationPipe.set(inputFile, TransformationState.converted)
+
+            })
+        }
+    )
+}
+
+
+const initialize = filename => {
+
+    let val = transformationPipe.get(filename)
+
+    if (val === undefined) {
+        val = TransformationState.none
+        transformationPipe.set(filename, val)
+
+    }
+}
+
+
+//const inputFile = "../converter/files/stl/test.stl";
+const testFiles = [
+    "../../tests/stl/Test 1.stl",
+    "../../tests/stl/Test 2.stl",
+    "../../tests/stl/Test 3.stl"
+];
+
+import {Queue} from 'queue-typescript';
+
+let queue = new Queue<string>(...testFiles)
+
+setInterval(() => {
+
+
+    stlebuuuuu()
+
+
+}, 5000)
+
+
+/**
+ * copies files from test folder to source folder
+ * where the actual
+ */
+function simulateFiles()
+{
+
+    // initialize - delete source folder
+
+    const root="."
+
+
+    setInterval(() => {
+
+        //copy files with random names
+
+       console.log("add file")
+
+
+    }, 1000)
+
+}
+simulateFiles()
+
+
+
+// TODO implement from abstract/interface with promise or callback to only fetch file if needed
+function scanForNewFiles()
+{
+    console.log("query for new files")
+    queue.enqueue( "../../tests/stl/Test 1.stl")
+}
+
+/**
+ * work flow todo
+ * - we du have a queue
+ * - we can add one or more items to the queue
+ *      - query for new files within a specified directory and simulate creating them instead for better use case tests
+ *      - have demo files in stl folder
+ *      - copy from there into in folder
+ * - timeout that checks the queue and starts converting entries
+ * - have a route to add entries
+ * - have a route to check state of current queue
+ *
+ * @param _req
+ * @param res
+ */
+
+
+
+
+
+export async function addQueueItem(_req: express.Request, res: express.Response) {
+
+    scanForNewFiles()
+
+    res.send("added to queue size:"+queue.length)
+   // res.redirect('/queue')
+
+}
+
+
+
+function stlebuuuuu()
+{
+    //get files from queue TODO
+    const inputFiles = [queue.dequeue(), queue.dequeue(), queue.dequeue()]
 
     // filter only new entries that are not already at least queued
     const newEntries = inputFiles.filter(filename => !transformationPipe.get(filename) || transformationPipe.get(filename) == TransformationState.none)
-
-
-    const currentStates = inputFiles.map(filename => {
-
-        let val = transformationPipe.get(filename)
-
-        if (val === undefined) {
-            val = TransformationState.none
-
-        }
-        transformationPipe.set(filename, val)
-
-        return {filename,state:val}
-
-
-    })
-
-
-    const withValidation = inputFile => {
-        return new Promise((resolve, reject) => {
-
-                convertFile(inputFile, function (err) {
-                    if (err)
-                        reject(err)
-
-                    transformationPipe.set(inputFile,TransformationState.converted)
-
-                }, function (report: any) {
-                    resolve(report)
-
-                    transformationPipe.set(inputFile,TransformationState.validated)
-
-                })
-            }
-        )
-    }
-
-
-    const withoutValidation = inputFile => {
-        return new Promise((resolve, reject) => {
-
-                convertFile(inputFile, function (err) {
-
-                    if (err)
-                        reject(err)
-                    else
-                        resolve(err)
-
-                    transformationPipe.set(inputFile,TransformationState.converted)
-
-                })
-            }
-        )
-    }
-
+    newEntries.forEach(initialize)
     newEntries.forEach(filename => transformationPipe.set(filename, TransformationState.queued))
 
+
+
+    // execute the stl xml transformation
     const promises = newEntries.map(withValidation)
-
-
     Promise.all(promises).then(function (values) {
-
         const response = newEntries.map((filename, i) => ({result: values[i], filename}))
-
-        //.map(f => getOrigin(_req,f))
-        // TODO have meaningful output even without validation
-
-
-
         console.log("Promise all:", response)
     })
 
 
+}
+
+
+export async function checkQueue(_req: express.Request, res: express.Response) {
+
+
+
+    // get current state info and return
+    const currentStates = Array.from(transformationPipe.keys()).map(filename => {
+        let val = transformationPipe.get(filename)
+        return {filename, state: val}
+
+    })
     res.json(currentStates)
 
 

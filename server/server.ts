@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path'
 import * as homeController from './controllers/home.controller';
 
-import {stl2ebu, stl2ebu_batch} from './controllers/converter.controller';
+import {addQueueItem, checkQueue} from './controllers/converter.controller';
 import {queuesSocket} from "./socket/queues";
 
 
@@ -28,18 +28,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);
 app.get('/Readme', homeController.readme);
 
-app.get('/stl-ebu', stl2ebu);
-app.get('/stl-ebu-batch', stl2ebu_batch);
+app.get('/stl-ebu-enqueue', addQueueItem);
 
 //app.get('/stream', streamTest);
 
-app.get('/queue',function(req,res){
-
-    // TODO the files will be loaded via batch similar to cors
-    const obj = { files:[{id:1,name:'test123.stl',progress:0.5},{id:3,name:'testqwe.stl',progress:1},{id:3,name:'testasd.stl',progress:0.2}]
-    }
-    res.json(obj);
-});
+app.get('/queue',checkQueue);
 
 
 
