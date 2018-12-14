@@ -1,7 +1,7 @@
-<!doctype html>
 <html>
-<head>
 
+<head>
+<title>Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous"></link>
@@ -15,85 +15,86 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
 
 
-        </head>
-        <body>
-
-    </script>
-    <div id="my_view">
-        Filter states:
-        <input v-model="search" type="text"/>
-        <table>
-
-            <tr v-for="entry in friends | filterBy search in 'state'">
-                <td>{{ entry.filename }}</td>
-                <td>
-                    <button type="button" class="btn {{ entry.state=='none'?'btn-secondary':'btn-primary' }}">{{
-                        entry.state }}
-                    </button>
-                </td>
-                <td>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-
-                </td>
-            </tr>
-
-        </table>
-    </div>
+</head>
+<body>
 
 
-    <script>
+<div id="my_view">
+    Filter states:
+    <input v-model="search" type="text"/>
+    <table>
 
-        var myModel = {
-            name: "Ashley",
-            age: 24,
-            friends: {
-                /*  bob: {filename: "Bob", state: 21},
-                  jane: {filename: "Jane", state: 20},
-                  anna: {filename: "Anna", state: 29}*/
-            },
-            search: ""
-        };
+        <tr v-for="entry in friends | filterBy search in 'state'">
+            <td>{{ entry.filename }}</td>
+            <td>
+                <button type="button" class="btn {{ entry.state=='none'?'btn-secondary':'btn-primary' }}">{{
+                    entry.state }}
+                </button>
+            </td>
+            <td>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                         aria-valuemax="100"></div>
+                </div>
 
-        var myViewModel = new Vue({
-            el: '#my_view',
-            data: myModel
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+
+<script>
+
+    var myModel = {
+        name: "Ashley",
+        age: 24,
+        friends: {
+            /*  bob: {filename: "Bob", state: 21},
+              jane: {filename: "Jane", state: 20},
+              anna: {filename: "Anna", state: 29}*/
+        },
+        search: ""
+    };
+
+    var myViewModel = new Vue({
+        el: '#my_view',
+        data: myModel
+    });
+
+
+    //-----------------
+    const nsp = io("/queues")
+    const socket = nsp.connect('localhost', {
+        port: 3033
+    });
+
+
+    nsp.on('connection', function (socket) {
+        console.log("connected")
+
+        nsp.on('disconnect', function () {
+
+            console.log("disconnected")
+
         });
+    });
 
 
-        //-----------------
-        const nsp = io("/queues")
-        const socket = nsp.connect('localhost', {
-            port: 3033
-        });
+    socket.on('data', function (data) {
+        data
+            .forEach(entry => {
+                entry.filename = entry.filename.split('/').pop()
+                Vue.set(myModel.friends, entry.filename, entry)
+            })
+    })
+
+    socket.on('queue', console.log)
 
 
-        nsp.on('connection', function (socket) {
-            console.log("connected")
-
-            nsp.on('disconnect', function () {
-
-                console.log("disconnected")
-
-            });
-        });
-
-
-        socket.on('data', function (data) {
-            data
-                .forEach(entry => {
-                    entry.filename = entry.filename.split('/').pop()
-                    Vue.set(myModel.friends,  entry.filename, entry)
-                })
-        })
-
-        socket.on('queue', console.log)
-
-
-    </script>
+</script>
 </body>
 </html>
