@@ -42,12 +42,12 @@ import * as rimraf from "rimraf";
  **/
 
 
-const simulatedFilesInterval = 50000;// create a test file every 50 seconds
+const simulatedFilesInterval = 4000;// create a test file every 50 seconds
 const emptyQueueIdleTimeout = 5100;
-const inBetweenQueueIdleTimeout = 15100;
+const inBetweenQueueIdleTimeout = 1100;
 
 
-const fileScanInterval = 2025;
+const fileScanInterval = 20025;
 
 
 const testFiles = [
@@ -66,10 +66,10 @@ const temp = path.resolve(__dirname, "../../tests/_temp_src/")
  * the main transformation loop. Will go idle for a certain amount if no files need to be converted
  */
 function transformQueueLoop() {
-
+    console.log("transformQueueLoop")
 
     //get files from queue TODO
-    let inputFiles = [queue.dequeue(), queue.dequeue(), queue.dequeue()]
+    let inputFiles = [queue.dequeue(),  queue.dequeue()]
 
     inputFiles = inputFiles.filter(v => v)
 
@@ -92,8 +92,10 @@ function transformQueueLoop() {
 /**
  * copies files from test folder to source folder
  * where the actual
+ * TODO simulate varying file load & validation_pending
  */
 function simulateFiles() {
+    console.log("simulateFiles")
 
     // initialize - delete source folder
 
@@ -122,8 +124,7 @@ function simulateFiles() {
     setInterval(copyTempFile, simulatedFilesInterval)
     copyTempFile()
     setTimeout(copyTempFile, 55)
-   // setTimeout(copyTempFile, 150)
-
+    // setTimeout(copyTempFile, 150)
 
 
 }
@@ -136,7 +137,7 @@ setInterval(() => scanForNewFiles(), fileScanInterval)
 
 // TODO implement from abstract/interface with promise or callback to only fetch file if needed
 function scanForNewFiles() {
-
+    console.log("scanForNewFiles")
     fs.readdirSync(temp).forEach(file => {
 
         const filename = temp + "/" + file
@@ -156,7 +157,7 @@ function scanForNewFiles() {
  *
  */
 function stlebu_next_batch(inputFiles: Array<string>) {
-
+    console.log("stlebu_next_batch")
     // filter only new entries that are not already at least queued
     const newEntries = inputFiles.filter(filename => !transformationPipe.get(filename) || transformationPipe.get(filename) == TransformationState.none)
     newEntries.forEach(initialize)
@@ -172,14 +173,27 @@ function stlebu_next_batch(inputFiles: Array<string>) {
 export async function checkQueue(_req: express.Request, res: express.Response) {
 
     // get current state info and return
-    const currentStates = Array.from(transformationPipe.keys()).map(filename => {
-        let val = transformationPipe.get(filename)
-        return {filename, state: val}
-
-    })
+    const currentStates = getCurrentStateOfSTLQueue()
     res.json(currentStates)
 
 
 }
 
+export function getCurrentStateOfSTLQueue(myFilter?:(val:any,key:number)=>any) {
+    let entries = Array.from(transformationPipe.keys())
+
+   if (myFilter)
+        entries = entries.filter(myFilter)
+    const currentStates = entries.map(filename => {
+        let val = transformationPipe.get(filename)
+        return {filename, state: val}
+
+    })
+
+
+
+
+    return currentStates
+
+}
 

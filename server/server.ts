@@ -4,9 +4,10 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path'
 import * as homeController from './controllers/home.controller';
 
-import {checkQueue} from './controllers/converter.controller';
+import {checkQueue, getCurrentStateOfSTLQueue} from './controllers/converter.controller';
 import {queuesSocket} from "./socket/queues";
-
+import {TransformationState} from "./controllers/transform-utils";
+import Socket = NodeJS.Socket;
 
 
 dotenv.config();
@@ -42,29 +43,33 @@ app.get('/Readme', homeController.readme);
 
 app.get('/queue',checkQueue);
 
-
-
-
 app.use("/out", express.static(path.join(__dirname , './converter/files/out')));
 app.use("/stl", express.static( path.join(__dirname ,'./converter/files/stl')));
 
 
-/*
-app.listen(app.get('port'), () => {
-  console.log(('App is running at http://localhost:%d in %s mode'),
-    app.get('port'), app.get('env'));
-  console.log('Press CTRL-C to stop\n');
-});*/
-
-
 const http = require('http')
-//import * as socketServer from 'socket.io';
-
-
 const server = http.createServer(app);
-//const io = socketServer(serve);
 
-queuesSocket(server);
+//-----------------------------------------
+queuesSocket(server,'/queues',function(socket:Socket){
+
+    // TODO send list once
+    socket.emit("data",getCurrentStateOfSTLQueue())
+    // TODO send queued items as batch with timeout
+
+    const noNone = (v:TransformationState) => v  != TransformationState.none
+
+    setInterval(() => socket.emit("data",getCurrentStateOfSTLQueue(noNone)),2000)
+
+
+    // TODO set progress changes of transformationPipeline as batch with timeout
+
+
+
+
+});
+
+//-----------------------------------------
 
 server.listen(app.get('port'),()=> {
     console.log(('App is running at http://localhost:%d in %s mode'),
