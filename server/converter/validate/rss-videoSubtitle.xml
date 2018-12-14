@@ -1,1 +1,56 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><tt xmlns="http://www.w3.org/ns/ttml" xmlns:ns2="http://www.w3.org/ns/ttml#styling" xmlns:ns3="http://www.w3.org/ns/ttml#parameter" xmlns:ns4="urn:ebu:tt:metadata" ns3:timeBase="smpte"><head><metadata><smpte:information xmlns:smpte="http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt" xmlns:m608="http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt#cea608" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" m608:captionService="F1C1CC" m608:channel="cc1"/></metadata><styling><style xml:id="basic" ns2:fontFamily="monospace" ns2:textAlign="left" ns2:color="white"/><style xml:id="7fe1c494-3c91-4fd7-85c8-1a5b698a811c" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/><style xml:id="0894b640-ceb5-4270-b88d-858b016a7956" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/><style xml:id="943f732c-83f7-4c0b-a0e1-6490a8255326" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/><style xml:id="d717c9d8-6e84-4a2c-b4e4-6f5bfb8fe858" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/><style xml:id="dff3f1ca-35b1-4703-81c8-4683dd815fad" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/></styling><layout><region xml:id="pop1"/><region xml:id="paint"/><region xml:id="rollup2"/><region xml:id="rollup3"/><region xml:id="rollup4"/></layout></head><body><div><p region="pop1" style="basic" begin="00:00:02:00" end="00:00:06:20"><span style="7fe1c494-3c91-4fd7-85c8-1a5b698a811c">Im Emirat RAS al-Chaima gibt es die längste Zipline de#r Welt.</span></p><p region="pop1" style="basic" begin="00:00:06:20" end="00:00:11:22"><span style="0894b640-ceb5-4270-b88d-858b016a7956">Auf über 2,8 km können bis zu 150 km/h erreicht werden.</span></p><p region="pop1" style="basic" begin="00:00:13:06" end="00:00:15:24"><span style="943f732c-83f7-4c0b-a0e1-6490a8255326">Ras al-Chaima will mehr Touristen ins Land locken.</span></p><p region="pop1" style="basic" begin="00:00:16:01" end="00:00:19:00"><span style="d717c9d8-6e84-4a2c-b4e4-6f5bfb8fe858">Die Fahrt endet an einer schwebenden Plattform.</span></p><p region="pop1" style="basic" begin="00:00:19:00" end="00:00:23:23"><span style="dff3f1ca-35b1-4703-81c8-4683dd815fad">Fester Boden kann nur über eine weitere Zipline erreicht werden.</span></p></div></body></tt>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tt xmlns="http://www.w3.org/ns/ttml" xmlns:ns2="http://www.w3.org/ns/ttml#styling"
+    xmlns:ns3="http://www.w3.org/ns/ttml#parameter" xmlns:ns4="urn:ebu:tt:metadata" ns3:timeBase="smpte">
+    <head>
+        <metadata>
+            <smpte:information xmlns:smpte="http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt"
+                               xmlns:m608="http://www.smpte-ra.org/schemas/2052-1/2010/smpte-tt#cea608"
+                               xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
+                               xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+                               xmlns:tts="http://www.w3.org/ns/ttml#styling" m608:captionService="F1C1CC"
+                               m608:channel="cc1"/>
+        </metadata>
+        <styling>
+            <style xml:id="basic" ns2:fontFamily="monospace" ns2:textAlign="left" ns2:color="white"/>
+            <style xml:id="7fe1c494-3c91-4fd7-85c8-1a5b698a811c" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/>
+            <style xml:id="0894b640-ceb5-4270-b88d-858b016a7956" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/>
+            <style xml:id="943f732c-83f7-4c0b-a0e1-6490a8255326" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/>
+            <style xml:id="d717c9d8-6e84-4a2c-b4e4-6f5bfb8fe858" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/>
+            <style xml:id="dff3f1ca-35b1-4703-81c8-4683dd815fad" ns2:fontSize="18px" ns2:backgroundColor="#000000FF"/>
+        </styling>
+        <layout>
+            <region xml:id="pop1"/>
+            <region xml:id="paint"/>
+            <region xml:id="rollup2"/>
+            <region xml:id="rollup3"/>
+            <region xml:id="rollup4"/>
+        </layout>
+    </head>
+    <body>
+        <div>
+            <p region="pop1" style="basic" begin="00:00:02:00" end="00:00:06:20">
+                <span style="7fe1c494-3c91-4fd7-85c8-1a5b698a811c">Im Emirat RAS al-Chaima gibt es die längste Zipline
+                    de#r Welt.
+                </span>
+            </p>
+            <p region="pop1" style="basic" begin="00:00:06:20" end="00:00:11:22">
+                <span style="0894b640-ceb5-4270-b88d-858b016a7956">Auf über 2,8 km können bis zu 150 km/h erreicht
+                    werden.
+                </span>
+            </p>
+            <p region="pop1" style="basic" begin="00:00:13:06" end="00:00:15:24">
+                <span style="943f732c-83f7-4c0b-a0e1-6490a8255326">Ras al-Chaima will mehr Touristen ins Land locken.
+                </span>
+            </p>
+            <p region="pop1" style="basic" begin="00:00:16:01" end="00:00:19:00">
+                <span style="d717c9d8-6e84-4a2c-b4e4-6f5bfb8fe858">Die Fahrt endet an einer schwebenden Plattform.
+                </span>
+            </p>
+            <p region="pop1" style="basic" begin="00:00:19:00" end="00:00:23:23">
+                <span style="dff3f1ca-35b1-4703-81c8-4683dd815fad">Fester Boden kann nur über eine weitere Zipline
+                    erreicht werden.
+                </span>
+            </p>
+        </div>
+    </body>
+</tt>

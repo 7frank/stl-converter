@@ -1,130 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  Profile: EBU-TT-D-Basic-DE -->
-<tt:tt xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ebuttm="urn:ebu:tt:metadata" ttp:timeBase="media" ttp:cellResolution="50 30" xml:lang="de">
-<tt:head>
-<tt:metadata>
-<ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
-</tt:metadata>
-<tt:styling>
-<tt:style xml:id="defaultStyle" tts:fontFamily="Verdana, Arial, Tiresias" tts:fontSize="160%" tts:lineHeight="125%" />
-<tt:style xml:id="textBlack" tts:color="#000000" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textRed" tts:color="#ff0000" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textGreen" tts:color="#00ff00" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textYellow" tts:color="#ffff00" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textBlue" tts:color="#0000ff" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textMagenta" tts:color="#ff00ff" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textCyan" tts:color="#00ffff" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textWhite" tts:color="#ffffff" tts:backgroundColor="#000000c2" />
-<tt:style xml:id="textCenter" tts:textAlign="center" />
-<tt:style xml:id="textLeft" tts:textAlign="left" />
-<tt:style xml:id="textRight" tts:textAlign="right" />
-</tt:styling>
-<tt:layout>
-<tt:region xml:id="top" tts:origin="10% 10%" tts:extent="80% 80%" tts:displayAlign="before" />
-<tt:region xml:id="bottom" tts:origin="10% 10%" tts:extent="80% 80%" tts:displayAlign="after" />
-</tt:layout>
-</tt:head>
-<tt:body>
-<tt:div style="defaultStyle">
-<tt:p xml:id="subtitle1" region="bottom" begin="00:00:02.000" end="00:00:04.007" style="textCenter">
-<tt:span style="textWhite">Wittichenau ist im Ausnahmezustand.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle2" region="bottom" begin="00:00:04.013" end="00:00:07.015" style="textCenter">
-<tt:span style="textWhite">Pünktlich um 13:30 Uhr</tt:span>
-<tt:br />
-<tt:span style="textWhite">ging der Umzug los.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle3" region="bottom" begin="00:00:07.021" end="00:00:11.016" style="textCenter">
-<tt:span style="textWhite">Er macht schon die 2. Runde</tt:span>
-<tt:br />
-<tt:span style="textWhite">am Marktplatz entlang.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle4" region="bottom" begin="00:00:11.022" end="00:00:15.015" style="textCenter">
-<tt:span style="textWhite">Es werden tolle bunte Bilder geboten.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle5" region="bottom" begin="00:00:15.021" end="00:00:19.024" style="textCenter">
-<tt:span style="textWhite">Es sind 6, 7, 8 große Wagen</tt:span>
-<tt:br />
-<tt:span style="textWhite">bei dem Umzug dabei.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle6" region="bottom" begin="00:00:20.002" end="00:00:22.024" style="textCenter">
-<tt:span style="textWhite">Es wurde monatelang</tt:span>
-<tt:br />
-<tt:span style="textWhite">an den Kulissen gebaut.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle7" region="bottom" begin="00:00:23.005" end="00:00:26.003" style="textCenter">
-<tt:span style="textWhite">Und an den Kostümen gearbeitet.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle8" region="bottom" begin="00:00:28.014" end="00:00:30.010" style="textCenter">
-<tt:span style="textWhite">Wir fragen mal.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle9" region="bottom" begin="00:00:31.006" end="00:00:32.014" style="textCenter">
-<tt:span style="textWhite">Was stellt ihr dar?</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle10" region="bottom" begin="00:00:39.005" end="00:00:42.003" style="textCenter">
-<tt:span style="textYellow">Wir sind die Zauberblumen.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle11" region="bottom" begin="00:00:42.019" end="00:00:45.010" style="textCenter">
-<tt:span style="textWhite">Könnt ihr die Leute verzaubern?</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle12" region="bottom" begin="00:00:45.018" end="00:00:48.006" style="textCenter">
-<tt:span style="textYellow">Wir verzaubern alle.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle13" region="bottom" begin="00:00:48.021" end="00:00:52.010" style="textCenter">
-<tt:span style="textWhite">Viel Spaß.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle14" region="bottom" begin="00:00:53.000" end="00:00:55.013" style="textCenter">
-<tt:span style="textWhite">Das wird alles beobachtet.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle15" region="bottom" begin="00:00:56.000" end="00:00:57.024" style="textCenter">
-<tt:span style="textWhite">Von der Kommission.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle16" region="bottom" begin="00:00:58.012" end="00:01:00.016" style="textCenter">
-<tt:span style="textWhite">Hier oben.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle17" region="bottom" begin="00:01:01.003" end="00:01:03.024" style="textCenter">
-<tt:span style="textWhite">Hier ist Thorsten.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle18" region="bottom" begin="00:01:04.013" end="00:01:08.003" style="textCenter">
-<tt:span style="textWhite">Was habt ihr vor einen Eindruck?</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle19" region="bottom" begin="00:01:09.000" end="00:01:12.018" style="textCenter">
-<tt:span style="textYellow">Es ist mit einer der schönsten seit</tt:span>
-<tt:br />
-<tt:span style="textYellow">312 Jahren.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle20" region="bottom" begin="00:01:14.003" end="00:01:17.017" style="textCenter">
-<tt:span style="textYellow">Ich gucke es noch nicht 312 Jahre,</tt:span>
-<tt:br />
-<tt:span style="textYellow">aber einige schon.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle21" region="bottom" begin="00:01:18.005" end="00:01:21.003" style="textCenter">
-<tt:span style="textYellow">Das besondere war die Vielfalt.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle22" region="bottom" begin="00:01:21.016" end="00:01:25.005" style="textCenter">
-<tt:span style="textYellow">Wir hatten keinen Wagen doppelt.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle23" region="bottom" begin="00:01:25.016" end="00:01:29.008" style="textCenter">
-<tt:span style="textYellow">Die großen Truppen, die vielen</tt:span>
-<tt:br />
-<tt:span style="textYellow">Frauen.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle24" region="bottom" begin="00:01:33.004" end="00:01:35.005" style="textCenter">
-<tt:span style="textWhite">Viel Spaß noch.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle25" region="bottom" begin="00:01:35.018" end="00:01:38.018" style="textCenter">
-<tt:span style="textWhite">Es ist noch nicht zu Ende.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle26" region="bottom" begin="00:01:39.008" end="00:01:42.006" style="textCenter">
-<tt:span style="textWhite">Danach gibt es eine große</tt:span>
-<tt:br />
-<tt:span style="textWhite">Versammlung auf dem Markt.</tt:span>
-</tt:p>
-<tt:p xml:id="subtitle27" region="bottom" begin="00:01:42.017" end="00:01:43.004" style="textCenter">
-<tt:span style="textWhite">Der Prinz bekommt den Schlüssel aus</tt:span>
-<tt:br />
-<tt:span style="textWhite">dem Rathaus.</tt:span>
-</tt:p>
-</tt:div>
-</tt:body>
+<tt:tt xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+       xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ebuttm="urn:ebu:tt:metadata" ttp:timeBase="media"
+       ttp:cellResolution="50 30" xml:lang="de">
+    <tt:head>
+        <tt:metadata>
+            <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
+        </tt:metadata>
+        <tt:styling>
+            <tt:style xml:id="defaultStyle" tts:fontFamily="Verdana, Arial, Tiresias" tts:fontSize="160%"
+                      tts:lineHeight="125%"/>
+            <tt:style xml:id="textBlack" tts:color="#000000" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textRed" tts:color="#ff0000" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textGreen" tts:color="#00ff00" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textYellow" tts:color="#ffff00" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textBlue" tts:color="#0000ff" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textMagenta" tts:color="#ff00ff" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textCyan" tts:color="#00ffff" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textWhite" tts:color="#ffffff" tts:backgroundColor="#000000c2"/>
+            <tt:style xml:id="textCenter" tts:textAlign="center"/>
+            <tt:style xml:id="textLeft" tts:textAlign="left"/>
+            <tt:style xml:id="textRight" tts:textAlign="right"/>
+        </tt:styling>
+        <tt:layout>
+            <tt:region xml:id="top" tts:origin="10% 10%" tts:extent="80% 80%" tts:displayAlign="before"/>
+            <tt:region xml:id="bottom" tts:origin="10% 10%" tts:extent="80% 80%" tts:displayAlign="after"/>
+        </tt:layout>
+    </tt:head>
+    <tt:body>
+        <tt:div style="defaultStyle">
+            <tt:p xml:id="subtitle1" region="bottom" begin="00:00:02.000" end="00:00:04.007" style="textCenter">
+                <tt:span style="textWhite">Wittichenau ist im Ausnahmezustand.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle2" region="bottom" begin="00:00:04.013" end="00:00:07.015" style="textCenter">
+                <tt:span style="textWhite">Pünktlich um 13:30 Uhr</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">ging der Umzug los.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle3" region="bottom" begin="00:00:07.021" end="00:00:11.016" style="textCenter">
+                <tt:span style="textWhite">Er macht schon die 2. Runde</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">am Marktplatz entlang.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle4" region="bottom" begin="00:00:11.022" end="00:00:15.015" style="textCenter">
+                <tt:span style="textWhite">Es werden tolle bunte Bilder geboten.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle5" region="bottom" begin="00:00:15.021" end="00:00:19.024" style="textCenter">
+                <tt:span style="textWhite">Es sind 6, 7, 8 große Wagen</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">bei dem Umzug dabei.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle6" region="bottom" begin="00:00:20.002" end="00:00:22.024" style="textCenter">
+                <tt:span style="textWhite">Es wurde monatelang</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">an den Kulissen gebaut.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle7" region="bottom" begin="00:00:23.005" end="00:00:26.003" style="textCenter">
+                <tt:span style="textWhite">Und an den Kostümen gearbeitet.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle8" region="bottom" begin="00:00:28.014" end="00:00:30.010" style="textCenter">
+                <tt:span style="textWhite">Wir fragen mal.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle9" region="bottom" begin="00:00:31.006" end="00:00:32.014" style="textCenter">
+                <tt:span style="textWhite">Was stellt ihr dar?</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle10" region="bottom" begin="00:00:39.005" end="00:00:42.003" style="textCenter">
+                <tt:span style="textYellow">Wir sind die Zauberblumen.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle11" region="bottom" begin="00:00:42.019" end="00:00:45.010" style="textCenter">
+                <tt:span style="textWhite">Könnt ihr die Leute verzaubern?</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle12" region="bottom" begin="00:00:45.018" end="00:00:48.006" style="textCenter">
+                <tt:span style="textYellow">Wir verzaubern alle.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle13" region="bottom" begin="00:00:48.021" end="00:00:52.010" style="textCenter">
+                <tt:span style="textWhite">Viel Spaß.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle14" region="bottom" begin="00:00:53.000" end="00:00:55.013" style="textCenter">
+                <tt:span style="textWhite">Das wird alles beobachtet.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle15" region="bottom" begin="00:00:56.000" end="00:00:57.024" style="textCenter">
+                <tt:span style="textWhite">Von der Kommission.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle16" region="bottom" begin="00:00:58.012" end="00:01:00.016" style="textCenter">
+                <tt:span style="textWhite">Hier oben.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle17" region="bottom" begin="00:01:01.003" end="00:01:03.024" style="textCenter">
+                <tt:span style="textWhite">Hier ist Thorsten.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle18" region="bottom" begin="00:01:04.013" end="00:01:08.003" style="textCenter">
+                <tt:span style="textWhite">Was habt ihr vor einen Eindruck?</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle19" region="bottom" begin="00:01:09.000" end="00:01:12.018" style="textCenter">
+                <tt:span style="textYellow">Es ist mit einer der schönsten seit</tt:span>
+                <tt:br/>
+                <tt:span style="textYellow">312 Jahren.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle20" region="bottom" begin="00:01:14.003" end="00:01:17.017" style="textCenter">
+                <tt:span style="textYellow">Ich gucke es noch nicht 312 Jahre,</tt:span>
+                <tt:br/>
+                <tt:span style="textYellow">aber einige schon.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle21" region="bottom" begin="00:01:18.005" end="00:01:21.003" style="textCenter">
+                <tt:span style="textYellow">Das besondere war die Vielfalt.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle22" region="bottom" begin="00:01:21.016" end="00:01:25.005" style="textCenter">
+                <tt:span style="textYellow">Wir hatten keinen Wagen doppelt.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle23" region="bottom" begin="00:01:25.016" end="00:01:29.008" style="textCenter">
+                <tt:span style="textYellow">Die großen Truppen, die vielen</tt:span>
+                <tt:br/>
+                <tt:span style="textYellow">Frauen.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle24" region="bottom" begin="00:01:33.004" end="00:01:35.005" style="textCenter">
+                <tt:span style="textWhite">Viel Spaß noch.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle25" region="bottom" begin="00:01:35.018" end="00:01:38.018" style="textCenter">
+                <tt:span style="textWhite">Es ist noch nicht zu Ende.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle26" region="bottom" begin="00:01:39.008" end="00:01:42.006" style="textCenter">
+                <tt:span style="textWhite">Danach gibt es eine große</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">Versammlung auf dem Markt.</tt:span>
+            </tt:p>
+            <tt:p xml:id="subtitle27" region="bottom" begin="00:01:42.017" end="00:01:43.004" style="textCenter">
+                <tt:span style="textWhite">Der Prinz bekommt den Schlüssel aus</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">dem Rathaus.</tt:span>
+            </tt:p>
+        </tt:div>
+    </tt:body>
 </tt:tt>

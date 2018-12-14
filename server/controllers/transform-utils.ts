@@ -19,10 +19,6 @@ export enum TransformationState {
 }
 
 
-
-
-
-
 interface STLTransformationResult {
 }
 

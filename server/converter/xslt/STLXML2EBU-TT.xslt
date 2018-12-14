@@ -16,20 +16,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <!--Stylesheet to transform an STLXML file into an EBU-TT file -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:tt="http://www.w3.org/ns/ttml" 
-    xmlns:ttp="http://www.w3.org/ns/ttml#parameter" 
-    xmlns:tts="http://www.w3.org/ns/ttml#styling" 
-    xmlns:ttm="http://www.w3.org/ns/ttml#metadata" 
-    xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style" 
-    xmlns:ebuttExt="urn:ebu:tt:extension"
-    xmlns:exsltCommon="http://exslt.org/common"
-    xmlns:exsltSet="http://exslt.org/sets"
-    xmlns:exsltDate="http://exslt.org/dates-and-times"
-    xmlns:fn="http://www.w3.org/2005/xpath-functions"
-    xmlns:scf="http://www.irt.de/scf"
-    exclude-result-prefixes="exsltCommon exsltSet exsltDate fn"
-    version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:tt="http://www.w3.org/ns/ttml"
+                xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+                xmlns:tts="http://www.w3.org/ns/ttml#styling"
+                xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
+                xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style"
+                xmlns:ebuttExt="urn:ebu:tt:extension"
+                xmlns:exsltCommon="http://exslt.org/common"
+                xmlns:exsltSet="http://exslt.org/sets"
+                xmlns:exsltDate="http://exslt.org/dates-and-times"
+                xmlns:fn="http://www.w3.org/2005/xpath-functions"
+                xmlns:scf="http://www.irt.de/scf"
+                exclude-result-prefixes="exsltCommon exsltSet exsltDate fn"
+                version="1.0">
     <xsl:output encoding="UTF-8" indent="no"/>
     <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
     <xsl:param name="offsetInSeconds" select="0"/>
@@ -146,8 +146,8 @@ limitations under the License.
         </colorMappings>
     </xsl:param>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
-    <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
-    <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+    <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'"/>
+    <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
     <xsl:template match="StlXml">
         <!--@ Interrupt if the STLXML file's time codes are not validated, i.e. TCS is set to '0' -->
         <xsl:if test="HEAD/GSI/TCS = '0'">
@@ -177,7 +177,8 @@ limitations under the License.
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:message terminate="yes">
-                        This Implementation only supports frame rates of 25 and thus only supports frameRateMultiplier value 
+                        This Implementation only supports frame rates of 25 and thus only supports frameRateMultiplier
+                        value
                         of '1 1'.
                     </xsl:message>
                 </xsl:otherwise>
@@ -191,13 +192,13 @@ limitations under the License.
             <!--** frameRate, frameRateMultiplier, markerMode and dropMode are only relevant for 'smpte' timeBase -->
             <xsl:when test="$timeBase = 'smpte'">
                 <tt:tt
-                    ttp:timeBase="{$timeBase}"
-                    ttp:frameRate="{$frameRate}"
-                    ttp:frameRateMultiplier="{$frameRateMultiplier}"
-                    ttp:markerMode="discontinuous"
-                    ttp:dropMode="nonDrop"
-                    ttp:cellResolution="50 30"
-                    xml:lang="{$language}">
+                        ttp:timeBase="{$timeBase}"
+                        ttp:frameRate="{$frameRate}"
+                        ttp:frameRateMultiplier="{$frameRateMultiplier}"
+                        ttp:markerMode="discontinuous"
+                        ttp:dropMode="nonDrop"
+                        ttp:cellResolution="50 30"
+                        xml:lang="{$language}">
                     <xsl:apply-templates select="HEAD">
                         <!--** Tunnel parameter needed for value calculation of decendaning elements -->
                         <xsl:with-param name="frameRate" select="$frameRate"/>
@@ -210,9 +211,9 @@ limitations under the License.
             </xsl:when>
             <xsl:when test="$timeBase = 'media'">
                 <tt:tt
-                    ttp:timeBase="{$timeBase}"
-                    ttp:cellResolution="50 30"
-                    xml:lang="{$language}">
+                        ttp:timeBase="{$timeBase}"
+                        ttp:cellResolution="50 30"
+                        xml:lang="{$language}">
                     <xsl:apply-templates select="HEAD">
                         <!--** Tunnel parameter needed for value calculation of descending elements -->
                         <xsl:with-param name="frameRate" select="$frameRate"/>
@@ -226,11 +227,11 @@ limitations under the License.
             <xsl:otherwise>
                 <xsl:message terminate="yes">
                     The selected timeCodeFormat is unknown. Only 'media' and 'smpte' are supported.
-                </xsl:message>            
+                </xsl:message>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template match="HEAD/GSI/LC">
         <!--** Element containing a hex value representing a specific language code; this implementation supports codes for de, en, es, fr, it and pt, default 
             is ''. Steps: -->
@@ -260,7 +261,7 @@ limitations under the License.
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template match="HEAD">
         <!--** Container for the GSI block. Steps: -->
         <xsl:param name="frameRate"/>
@@ -269,10 +270,10 @@ limitations under the License.
             <xsl:apply-templates select="GSI">
                 <!--** Tunnel parameter needed for value calculation of descending elements -->
                 <xsl:with-param name="frameRate" select="$frameRate"/>
-            </xsl:apply-templates>                
+            </xsl:apply-templates>
         </tt:head>
     </xsl:template>
-    
+
     <xsl:template match="GSI">
         <!--** Container for Metadata information for all the document's subtitles. Steps: -->
         <xsl:param name="frameRate"/>
@@ -283,16 +284,21 @@ limitations under the License.
                     <xsl:value-of select="fn:format-date(fn:current-date(), '[Y0001]-[M01]-[D01]')"/>
                 </xsl:when>
                 <!-- EXSLT -->
-                <xsl:when test="function-available('exsltDate:year') and function-available('exsltDate:month-in-year') and function-available('exsltDate:day-in-month')">
-                    <xsl:value-of select="concat(format-number(exsltDate:year(), '0000'), '-', format-number(exsltDate:month-in-year(), '00'), '-', format-number(exsltDate:day-in-month(), '00'))"/>
+                <xsl:when
+                        test="function-available('exsltDate:year') and function-available('exsltDate:month-in-year') and function-available('exsltDate:day-in-month')">
+                    <xsl:value-of
+                            select="concat(format-number(exsltDate:year(), '0000'), '-', format-number(exsltDate:month-in-year(), '00'), '-', format-number(exsltDate:day-in-month(), '00'))"/>
                 </xsl:when>
                 <!-- neither -->
                 <xsl:otherwise>
-                    <xsl:message terminate="yes">The required functions of neither XSLT 2.0 nor EXSLT are available. These are needed to set the ebuttm:documentCreationDate/ebuttm:documentRevisionDate field values.</xsl:message>
+                    <xsl:message terminate="yes">The required functions of neither XSLT 2.0 nor EXSLT are available.
+                        These are needed to set the ebuttm:documentCreationDate/ebuttm:documentRevisionDate field
+                        values.
+                    </xsl:message>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        
+
         <tt:metadata>
             <ebuttm:documentMetadata>
                 <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
@@ -305,8 +311,12 @@ limitations under the License.
                 <xsl:apply-templates select="TN"/>
                 <xsl:apply-templates select="TCD"/>
                 <xsl:apply-templates select="SLR"/>
-                <ebuttm:documentCreationDate><xsl:value-of select="$currentDateFormatted"/></ebuttm:documentCreationDate>
-                <ebuttm:documentRevisionDate><xsl:value-of select="$currentDateFormatted"/></ebuttm:documentRevisionDate>
+                <ebuttm:documentCreationDate>
+                    <xsl:value-of select="$currentDateFormatted"/>
+                </ebuttm:documentCreationDate>
+                <ebuttm:documentRevisionDate>
+                    <xsl:value-of select="$currentDateFormatted"/>
+                </ebuttm:documentRevisionDate>
                 <ebuttm:documentRevisionNumber>0</ebuttm:documentRevisionNumber>
                 <xsl:apply-templates select="TNS"/>
                 <xsl:apply-templates select="MNC"/>
@@ -327,16 +337,16 @@ limitations under the License.
         <tt:styling>
             <!--@ Create tt:style element defining the defaultStyle -->
             <tt:style
-                xml:id="defaultStyle"
-                tts:textDecoration="none"
-                tts:fontWeight="normal"
-                tts:fontStyle="normal"
-                tts:backgroundColor="transparent"
-                tts:color="white"
-                tts:textAlign="center"
-                tts:fontFamily="monospaceSansSerif"
-                tts:fontSize="1c 1c"
-                tts:lineHeight="normal"/>
+                    xml:id="defaultStyle"
+                    tts:textDecoration="none"
+                    tts:fontWeight="normal"
+                    tts:fontStyle="normal"
+                    tts:backgroundColor="transparent"
+                    tts:color="white"
+                    tts:textAlign="center"
+                    tts:fontFamily="monospaceSansSerif"
+                    tts:fontSize="1c 1c"
+                    tts:lineHeight="normal"/>
             <!--@ Create all others supported styles -->
             <xsl:copy-of select="exsltCommon:node-set($styleTemplates)/tt:styling/tt:style"/>
             <tt:style xml:id="textAlignLeft" tts:textAlign="start"/>
@@ -346,16 +356,16 @@ limitations under the License.
         </tt:styling>
         <tt:layout>
             <!--@ Create tt:region element defining the bottomAligned region -->
-            <tt:region 
-                xml:id="bottomAligned" 
-                tts:displayAlign="after" 
-                tts:padding="0c" 
-                tts:writingMode="lrtb" 
-                tts:origin="10% 10%" 
-                tts:extent="80% 80%"/>
+            <tt:region
+                    xml:id="bottomAligned"
+                    tts:displayAlign="after"
+                    tts:padding="0c"
+                    tts:writingMode="lrtb"
+                    tts:origin="10% 10%"
+                    tts:extent="80% 80%"/>
         </tt:layout>
     </xsl:template>
-    
+
     <xsl:template match="CPN">
         <xsl:variable name="value" select="normalize-space(.)"/>
         <xsl:if test="$value != '437' and $value != '850' and $value != '860' and $value != '863' and $value != '865'">
@@ -364,7 +374,7 @@ limitations under the License.
             </xsl:message>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="CCT">
         <!--** Defines the used Character Code Table; this implementation only supports a value of '00' -->
         <xsl:if test="normalize-space(.) != '00' and normalize-space(.) != '01' and normalize-space(.) != '02' and normalize-space(.) != '03' and normalize-space(.) != '04'">
@@ -377,7 +387,7 @@ limitations under the License.
     <xsl:template match="TCP">
         <!--** Element containing information about the Time Code: Start-of-Programme. Steps: -->
         <xsl:param name="frameRate"/>
-        
+
         <!--@ Create ebuttm:documentStartOfProgramme element with the checked content -->
         <ebuttm:documentStartOfProgramme>
             <xsl:call-template name="getTimecode">
@@ -398,7 +408,7 @@ limitations under the License.
             </ebuttm:documentOriginalProgrammeTitle>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="OET">
         <!--** Element containing information about the Original Episode Title. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -409,7 +419,7 @@ limitations under the License.
             </ebuttm:documentOriginalEpisodeTitle>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="TPT">
         <!--** Element containing information about the Translated Programme Title. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -420,8 +430,8 @@ limitations under the License.
             </ebuttm:documentTranslatedProgrammeTitle>
         </xsl:if>
     </xsl:template>
-    
-    <xsl:template match="TN">        
+
+    <xsl:template match="TN">
         <!--** Element containing information about the Translator's Name. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
         <xsl:if test="string-length(normalize-space(.)) &gt; 0">
@@ -431,7 +441,7 @@ limitations under the License.
             </ebuttm:documentTranslatorsName>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="TET">
         <!--** Element containing information about the Translated Episode Title. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -442,7 +452,7 @@ limitations under the License.
             </ebuttm:documentTranslatedEpisodeTitle>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="TCD">
         <!--** Element containing information about the Translator's Contact Details. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -453,7 +463,7 @@ limitations under the License.
             </ebuttm:documentTranslatorsContactDetails>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="SLR">
         <!--** Element containing information about the Subtitle List Reference Code. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -464,7 +474,7 @@ limitations under the License.
             </ebuttm:documentSubtitleListReferenceCode>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="TNS">
         <!--** Element containing information about the Total Number of Subtitles. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -475,7 +485,7 @@ limitations under the License.
             </ebuttm:documentTotalNumberOfSubtitles>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="MNC">
         <!--** Element containing information about the maximum number of displayable characters in any row. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -486,7 +496,7 @@ limitations under the License.
             </ebuttm:documentMaximumNumberOfDisplayableCharacterInAnyRow>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="CO">
         <!--** Element containing information about the Country of Origin; this implementation only supports the values of 
             'DEU', 'GBR', 'ESP', 'FRA', 'ITA' and 'PRT'. Steps: -->
@@ -518,7 +528,7 @@ limitations under the License.
             </xsl:choose>
         </ebuttm:documentCountryOfOrigin>
     </xsl:template>
-    
+
     <xsl:template match="PUB">
         <!--** Element containing information about the Publisher. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -529,7 +539,7 @@ limitations under the License.
             </ebuttm:documentPublisher>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="EN">
         <!--** Element containing information about the Editor's Name. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -539,8 +549,8 @@ limitations under the License.
                 <xsl:value-of select="normalize-space(.)"/>
             </ebuttm:documentEditorsName>
         </xsl:if>
-    </xsl:template>    
-    
+    </xsl:template>
+
     <xsl:template match="ECD">
         <!--** Element containing information about the Editor's Contact Details. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -551,7 +561,7 @@ limitations under the License.
             </ebuttm:documentEditorsContactDetails>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="UDA">
         <!--** Element containing data from the User Defined Area. Steps: -->
         <!--@ Check if element is not empty -->
@@ -578,7 +588,7 @@ limitations under the License.
             <xsl:with-param name="fieldNameEbutt">ebuttExt:stlRevisionDate</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-    
+
     <xsl:template name="getDate">
         <!--** Converts the value of the element into a date. Steps:-->
         <xsl:param name="fieldNameStl"/>
@@ -610,7 +620,7 @@ limitations under the License.
                         <xsl:value-of select="$fieldNameStl"/> is always set as date with format yymmdd.
                     </xsl:message>
                 </xsl:otherwise>
-            </xsl:choose>        
+            </xsl:choose>
         </xsl:if>
     </xsl:template>
 
@@ -631,7 +641,8 @@ limitations under the License.
         <!--@ Create tt:body and handle every used SGN (in document order) -->
         <tt:body>
             <!--@ Select all subtitle TTI blocks -->
-            <xsl:variable name="tti_all" select="TTICONTAINER/TTI[number(CF) != 1 and normalize-space(translate(EBN, $smallcase, $uppercase)) != 'FE']"/>
+            <xsl:variable name="tti_all"
+                          select="TTICONTAINER/TTI[number(CF) != 1 and normalize-space(translate(EBN, $smallcase, $uppercase)) != 'FE']"/>
             <xsl:choose><!-- branch depending on available functions, as XSLT 1.0 is not sufficient here -->
                 <!-- EXSLT -->
                 <xsl:when test="function-available('exsltSet:distinct')">
@@ -655,12 +666,14 @@ limitations under the License.
                 </xsl:when>
                 <!-- neither -->
                 <xsl:otherwise>
-                    <xsl:message terminate="yes">The required functions of neither EXSLT nor XSLT 2.0 are available. These are needed to retrieve the distinct TTI block SGN values.</xsl:message>
+                    <xsl:message terminate="yes">The required functions of neither EXSLT nor XSLT 2.0 are available.
+                        These are needed to retrieve the distinct TTI block SGN values.
+                    </xsl:message>
                 </xsl:otherwise>
             </xsl:choose>
         </tt:body>
     </xsl:template>
-    
+
     <xsl:template name="handleSgn">
         <!--** Handles a specific SGN value. Steps:-->
         <xsl:param name="tti_all"/>
@@ -676,7 +689,7 @@ limitations under the License.
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
                 <xsl:with-param name="frameRate" select="$frameRate"/>
             </xsl:apply-templates>
-        </tt:div>                
+        </tt:div>
     </xsl:template>
 
     <xsl:template match="TTI">
@@ -699,11 +712,12 @@ limitations under the License.
                 <xsl:with-param name="timeCodeFormat" select="$timeBase"/>
             </xsl:apply-templates>
         </xsl:variable>
-        <xsl:apply-templates select="EBN"/> 
+        <xsl:apply-templates select="EBN"/>
         <xsl:apply-templates select="VP"/>
         <xsl:apply-templates select="JC"/>
         <!--@ Concat all user data into variable 'combined_user_data' -->
-        <xsl:variable name="tti_user_data" select="parent::node()/TTI[SN = $SN and normalize-space(translate(EBN, $smallcase, $uppercase)) = 'FE']"/>
+        <xsl:variable name="tti_user_data"
+                      select="parent::node()/TTI[SN = $SN and normalize-space(translate(EBN, $smallcase, $uppercase)) = 'FE']"/>
         <xsl:variable name="combined_user_data">
             <xsl:for-each select="$tti_user_data">
                 <xsl:value-of select="normalize-space(./TF)"/>
@@ -718,51 +732,53 @@ limitations under the License.
             <xsl:with-param name="VP" select="normalize-space(VP)"/>
             <xsl:with-param name="user_data" select="$combined_user_data"/>
         </xsl:apply-templates>
-        
+
     </xsl:template>
 
     <xsl:template match="EBN">
         <!--** Checks if the EBN element has valid content and if the content is supported by this implementation -->
         <xsl:if test="normalize-space(translate(., $smallcase, $uppercase)) != 'FF'">
             <xsl:message terminate="yes">
-                This implementation only supports EBN values of 'FE' (user data) and 'FF' (last TTI block of subtitle set) i.e. it doesn't support Extension Block mapping. Segmented TTI blocks (e.g. for long subtitles) must be merged before conversion.
+                This implementation only supports EBN values of 'FE' (user data) and 'FF' (last TTI block of subtitle
+                set) i.e. it doesn't support Extension Block mapping. Segmented TTI blocks (e.g. for long subtitles)
+                must be merged before conversion.
             </xsl:message>
-        </xsl:if>   
+        </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="VP">
         <!--** Checks if the VP element has valid content and if the content is supported by this implementation -->
         <xsl:if test="number(normalize-space(.)) &lt; 1 or number(normalize-space(.)) &gt; 23 or not(number(.) = number(.))">
             <xsl:message terminate="yes">
-                The only possible values of VP are decimal numbers between 1 and 23. 
+                The only possible values of VP are decimal numbers between 1 and 23.
             </xsl:message>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="JC">
         <!--** Checks if the JC element has valid content and if the content is supported by this implementation -->
         <xsl:if test="normalize-space(.) != '00' and normalize-space(.) != '01' and normalize-space(.) != '02' and normalize-space(.) != '03'">
             <xsl:message terminate="yes">
-                The only possible values of JC are '00', '01', '02', '03'. 
+                The only possible values of JC are '00', '01', '02', '03'.
             </xsl:message>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="TCI">
         <xsl:param name="timeCodeFormat"/>
         <xsl:param name="frameRate"/>
-        
+
         <xsl:call-template name="getTimecode">
             <xsl:with-param name="fieldName">TCI</xsl:with-param>
             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
             <xsl:with-param name="frameRate" select="$frameRate"/>
         </xsl:call-template>
     </xsl:template>
-    
+
     <xsl:template match="TCO">
         <xsl:param name="timeCodeFormat"/>
         <xsl:param name="frameRate"/>
-        
+
         <xsl:call-template name="getTimecode">
             <xsl:with-param name="fieldName">TCO</xsl:with-param>
             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
@@ -781,7 +797,8 @@ limitations under the License.
         <xsl:if test="number($tc) != number($tc)">
             <!--@ Interrupt transformation if content contains non-numerical values -->
             <xsl:message terminate="yes">
-                The <xsl:value-of select="$fieldName"/> field has invalid content.
+                The
+                <xsl:value-of select="$fieldName"/> field has invalid content.
             </xsl:message>
         </xsl:if>
         <!--@ Split content-string in hours, minutes, seconds and frames; the TCx element's content is always a SMPTE formatted time code -->
@@ -813,10 +830,11 @@ limitations under the License.
                     <!--@ Interrupt when the given value isn't correct for 25 frames -->
                     <xsl:otherwise>
                         <xsl:message terminate="yes">
-                            <xsl:value-of select="$fieldName"/> is always set in valid SMPTE time with format hhmmssff. This implementation only supports 25 frames.
+                            <xsl:value-of select="$fieldName"/> is always set in valid SMPTE time with format hhmmssff.
+                            This implementation only supports 25 frames.
                         </xsl:message>
                     </xsl:otherwise>
-                </xsl:choose>                    
+                </xsl:choose>
             </xsl:when>
             <!--@ Interrupt if timeCodeFormat is set to neither 'media' nor 'smpte'-->
             <xsl:otherwise>
@@ -826,7 +844,7 @@ limitations under the License.
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="timestampConversion">
         <!--** Calculates the timestamp. Steps: -->
         <xsl:param name="hours"/>
@@ -835,10 +853,11 @@ limitations under the License.
         <xsl:param name="frames"/>
         <xsl:param name="timeCodeFormat"/>
         <xsl:param name="frameRate"/>
-        
+
         <!--@ Calculate the value in frames of the current timestamp before applying the offsets -->
-        <xsl:variable name="stampValueInFrames" select="($hours * 3600 + $minutes * 60 + $seconds) * number($frameRate) + $frames"/>
-        
+        <xsl:variable name="stampValueInFrames"
+                      select="($hours * 3600 + $minutes * 60 + $seconds) * number($frameRate) + $frames"/>
+
         <!--@ Check format of the offset in frames -->
         <xsl:variable name="offsetinFramesSign">
             <xsl:choose>
@@ -852,8 +871,12 @@ limitations under the License.
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="offsetinFramesAbs">
-            <xsl:if test="$offsetinFramesSign = 1"><xsl:value-of select="$offsetInFrames"/></xsl:if>
-            <xsl:if test="$offsetinFramesSign = -1"><xsl:value-of select="substring($offsetInFrames, 2)"/></xsl:if>
+            <xsl:if test="$offsetinFramesSign = 1">
+                <xsl:value-of select="$offsetInFrames"/>
+            </xsl:if>
+            <xsl:if test="$offsetinFramesSign = -1">
+                <xsl:value-of select="substring($offsetInFrames, 2)"/>
+            </xsl:if>
         </xsl:variable>
         <xsl:if test="not(substring($offsetinFramesAbs, 3, 1) = ':' and substring($offsetinFramesAbs, 6, 1) = ':' and substring($offsetinFramesAbs, 9, 1) = ':')">
             <xsl:message terminate="yes">
@@ -870,7 +893,7 @@ limitations under the License.
                     )
                 ) + number(substring($offsetinFramesAbs, 10, 2))
             "/>
-        
+
         <!--@ Convert TCP offset in frames into frames count, if needed -->
         <xsl:variable name="offsetTCPValue">
             <xsl:choose>
@@ -881,7 +904,7 @@ limitations under the License.
                             The TCP field has a wrong length.
                         </xsl:message>
                     </xsl:if>
-                    
+
                     <xsl:value-of select="
                         number($frameRate) * (
                             number(substring($tcp, 1, 2)) * 3600 +
@@ -895,16 +918,18 @@ limitations under the License.
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        
+
         <!--@ Calculate the value in frames of the current timestamp after applying the offsets -->
-        <xsl:variable name="targetStampValueInFrames" select="$stampValueInFrames - $offsetInSeconds * number($frameRate) - $offsetinFramesValue - $offsetTCPValue"/>
+        <xsl:variable name="targetStampValueInFrames"
+                      select="$stampValueInFrames - $offsetInSeconds * number($frameRate) - $offsetinFramesValue - $offsetTCPValue"/>
         <!--@ Interrupt, if the offset is too large, i.e. produces negative values -->
         <xsl:if test="$targetStampValueInFrames &lt; 0">
             <xsl:message terminate="yes">
-                The chosen offsets would result in a negative timestamp. stamp: <xsl:value-of select="concat($hours, $minutes, $seconds, $frames)"/> 
+                The chosen offsets would result in a negative timestamp. stamp:
+                <xsl:value-of select="concat($hours, $minutes, $seconds, $frames)"/>
             </xsl:message>
         </xsl:if>
-        
+
         <!--@ Calculate hours, minutes and seconds depending on the given offset parameter -->
         <xsl:variable name="mediaTotalSeconds" select="floor($targetStampValueInFrames div number($frameRate))"/>
         <xsl:variable name="mediaHours" select="floor($mediaTotalSeconds div 3600)"/>
@@ -921,11 +946,13 @@ limitations under the License.
             <xsl:when test="$timeCodeFormat = 'media'">
                 <xsl:variable name="mediaFraction" select="($mediaFrames div number($frameRate))*1000 mod 1000"/>
                 <xsl:variable name="outputFraction" select="format-number($mediaFraction, '000')"/>
-                <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $outputFraction)"/>
+                <xsl:value-of
+                        select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $outputFraction)"/>
             </xsl:when>
             <!--@ If timebase is smpte, concatenate the frames to the calculated values -->
             <xsl:when test="$timeCodeFormat = 'smpte'">
-                <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, ':', $outputFrames)"/>                
+                <xsl:value-of
+                        select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, ':', $outputFrames)"/>
             </xsl:when>
             <!--@ Interrupt if the source's timeCodeFormat is neither 'media' nor 'smpte' -->
             <xsl:otherwise>
@@ -935,7 +962,7 @@ limitations under the License.
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template match="TF">
         <!--** Container that represents the STL file's Text field. Contains the subtitle text and the relevant control codes. Steps: -->
         <xsl:param name="begin"/>
@@ -963,12 +990,12 @@ limitations under the License.
                     <xsl:value-of select="'textAlignRight'"/>
                 </xsl:when>
             </xsl:choose>
-        </xsl:variable> 
+        </xsl:variable>
         <tt:p
-            style="{$style}"
-            region="bottomAligned"
-            begin="{$begin}"
-            end="{$end}">
+                style="{$style}"
+                region="bottomAligned"
+                begin="{$begin}"
+                end="{$end}">
             <xsl:attribute name="xml:id"><!-- AVT cannot be used for xml:id -->
                 <xsl:value-of select="concat('sub', $SN)"/>
             </xsl:attribute>
@@ -991,7 +1018,7 @@ limitations under the License.
                 <xsl:with-param name="bufferForeground" select="'AlphaWhite'"/>
             </xsl:apply-templates>
             <!--@ Calculate the amount of lines already used by the subtitle itself -->
-            <xsl:variable name="lines" >
+            <xsl:variable name="lines">
                 <xsl:choose>
                     <!-- It is assumed here that 
                           1. all subtitle lines in a TextField are of the same height, either DoubleHeight or SingleHeight
@@ -1011,7 +1038,7 @@ limitations under the License.
             </xsl:call-template>
         </tt:p>
     </xsl:template>
-    
+
     <xsl:template name="verticalPositioning">
         <!--** Calculates the amount of tt:br element to move the subtitle to its designated vertical position -->
         <xsl:param name="lines"/>
@@ -1026,7 +1053,7 @@ limitations under the License.
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="StartBox">
         <!--** Indicates the beginning of an STL box. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
@@ -1052,7 +1079,7 @@ limitations under the License.
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template match="EndBox">
         <!--** Indicates the end of an STL box. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
@@ -1089,30 +1116,30 @@ limitations under the License.
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template match="text()[normalize-space(.) = '']">
         <!--** Match text nodes with no text. Just pass parameters -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()" />
-        <xsl:param name="buffer" select="''" />
-        <xsl:param name="doubleHeight" />
-        <xsl:param name="spanCreated" />
+        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="buffer" select="''"/>
+        <xsl:param name="doubleHeight"/>
+        <xsl:param name="spanCreated"/>
         <xsl:param name="bufferForeground"/>
         <xsl:param name="bufferBackground"/>
         <!--@ Match the following sibling node -->
         <xsl:apply-templates select="following-sibling::node()[1]">
-            <xsl:with-param name="foreground" select="$foreground" />
-            <xsl:with-param name="background" select="$background" />
-            <xsl:with-param name="boxStarted" select="$boxStarted" />
-            <xsl:with-param name="buffer" select="$buffer" />
-            <xsl:with-param name="doubleHeight" select="$doubleHeight" />
-            <xsl:with-param name="spanCreated" select="$spanCreated" />
+            <xsl:with-param name="foreground" select="$foreground"/>
+            <xsl:with-param name="background" select="$background"/>
+            <xsl:with-param name="boxStarted" select="$boxStarted"/>
+            <xsl:with-param name="buffer" select="$buffer"/>
+            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template match="text()[normalize-space(.) != '']">
         <!--** Matches all text-nodes between the control codes that contain text. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
@@ -1126,7 +1153,8 @@ limitations under the License.
         <!--@ Check if text node is outside of boxing. If so, terminate. -->
         <xsl:if test="not($boxStarted or not(../StartBox or ../EndBox))">
             <xsl:message terminate="yes">
-                There shall be no text outside of boxing (found text: '<xsl:value-of select="string(normalize-space(.))"/>')!
+                There shall be no text outside of boxing (found text: '<xsl:value-of
+                    select="string(normalize-space(.))"/>')!
             </xsl:message>
         </xsl:if>
         <!--@ Check if buffer needs to be written to a span. This should usually be the case when this text node is not the first one.
@@ -1135,7 +1163,7 @@ limitations under the License.
             string-length(normalize-space($buffer)) &gt; 0
             and not( $bufferForeground = $foreground 
             and $bufferBackground = $background )"/>
-        
+
         <!--@ If buffer needs to be written, write it. -->
         <xsl:if test="$writeOldBuffer">
             <xsl:call-template name="writeBuffer">
@@ -1163,7 +1191,7 @@ limitations under the License.
         <xsl:variable name="writeNewBuffer" select="
             not(following-sibling::text()[normalize-space(.) != ''])
             and string-length(normalize-space($newBuffer)) &gt; 0"/>
-        
+
         <!--@ If new buffer needs to be written, write it -->
         <xsl:if test="$writeNewBuffer">
             <xsl:call-template name="writeBuffer">
@@ -1236,7 +1264,7 @@ limitations under the License.
             </xsl:with-param>
         </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template match="newline">
         <!--** Indicates a linebreak. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
@@ -1251,7 +1279,7 @@ limitations under the License.
         <xsl:if test="string-length(normalize-space($buffer)) &gt; 0">
             <xsl:call-template name="writeBuffer">
                 <xsl:with-param name="foreground" select="$foreground"/>
-                <xsl:with-param name="background" select="$background"/>   
+                <xsl:with-param name="background" select="$background"/>
                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                 <xsl:with-param name="spanCreated" select="$spanCreated"/>
                 <xsl:with-param name="buffer" select="$buffer"/>
@@ -1277,9 +1305,9 @@ limitations under the License.
             <!--** Buffer colors will be set correctly when the next text node is processed. -->
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
-        </xsl:apply-templates>        
+        </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template match="DoubleHeight">
         <!--** Indicates the use of double height text in this line. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
@@ -1334,15 +1362,15 @@ limitations under the License.
                 </xsl:choose>
             </xsl:with-param>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
-            <xsl:with-param name="bufferBackground" select="$bufferBackground"/> 
-            <xsl:with-param name="bufferForeground" select="$bufferForeground"/> 
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <!--** Add a space character -->
             <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
         </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template match="AlphaBlack|AlphaRed|AlphaGreen|AlphaYellow|AlphaBlue|AlphaMagenta|AlphaCyan|AlphaWhite">
         <!--** Matches all color control codes that change the current foreground coloring. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
@@ -1358,7 +1386,7 @@ limitations under the License.
             <!--** Tunnel parameters needed for value calculation of following elements -->
             <!--** Update foreground color -->
             <xsl:with-param name="foreground" select="name(.)"/>
-            <xsl:with-param name="background" select="$background"/>   
+            <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
@@ -1368,7 +1396,7 @@ limitations under the License.
             <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
         </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template name="writeBuffer">
         <xsl:param name="background"/>
         <xsl:param name="foreground"/>
@@ -1396,37 +1424,40 @@ limitations under the License.
             <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
             <xsl:when test="$spanCreated">
                 <tt:span
-                    style="{$style}">
+                        style="{$style}">
                     <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
                 </tt:span>
             </xsl:when>
             <!--** Otherwise write the normalized content of the buffer -->
             <xsl:otherwise>
                 <tt:span
-                    style="{$style}">
+                        style="{$style}">
                     <xsl:value-of select="normalize-space($buffer)"/>
                 </tt:span>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="getColor">
         <!--** Gets the ttmlNamedColor for the respective stlControlCode if the necessary information is given. Steps: -->
         <xsl:param name="stlControlCode"/>
         <xsl:choose>
             <!--@ Terminate when there's no ttmlNamedColor given for the respective stlControlCode -->
-            <xsl:when test="not(exsltCommon:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor)">
+            <xsl:when
+                    test="not(exsltCommon:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor)">
                 <xsl:message terminate="yes">
-                    There is no ttmlNamedColor element given for the stlControlCode <xsl:value-of select="$stlControlCode"/>.
+                    There is no ttmlNamedColor element given for the stlControlCode <xsl:value-of
+                        select="$stlControlCode"/>.
                 </xsl:message>
             </xsl:when>
             <!--@ Return ttmlNamedColor otherwise -->
             <xsl:otherwise>
-                <xsl:value-of select="exsltCommon:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor"/>
+                <xsl:value-of
+                        select="exsltCommon:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="getStyle">
         <!--** Gets the xml:id of the style that references the provided fore- and background if the necessary information is given. Steps: -->
         <xsl:param name="foreground"/>
@@ -1445,14 +1476,17 @@ limitations under the License.
         </xsl:variable>
         <xsl:choose>
             <!--@ Terminate if there's no xml:id attribute belonging to a style with the respective settings for fore- and background -->
-            <xsl:when test="not(exsltCommon:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id)">
+            <xsl:when
+                    test="not(exsltCommon:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id)">
                 <xsl:message terminate="yes">
-                    No tt:style was found with foreground: <xsl:value-of select="$foreground_ttml"/> and background: <xsl:value-of select="$background_ttml"/>.
+                    No tt:style was found with foreground:
+                    <xsl:value-of select="$foreground_ttml"/> and background: <xsl:value-of select="$background_ttml"/>.
                 </xsl:message>
             </xsl:when>
             <!--@ Return the xml:id attribute's value otherwise -->
             <xsl:otherwise>
-                <xsl:value-of select="exsltCommon:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id"/>        
+                <xsl:value-of
+                        select="exsltCommon:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1462,20 +1496,20 @@ limitations under the License.
         the next sibling. -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()" />
-        <xsl:param name="buffer" select="''" />
-        <xsl:param name="doubleHeight" />
-        <xsl:param name="spanCreated" />
+        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="buffer" select="''"/>
+        <xsl:param name="doubleHeight"/>
+        <xsl:param name="spanCreated"/>
         <xsl:param name="bufferForeground"/>
         <xsl:param name="bufferBackground"/>
         <!--@ Match the following sibling node -->
         <xsl:apply-templates select="following-sibling::node()[1]">
-            <xsl:with-param name="foreground" select="$foreground" />
-            <xsl:with-param name="background" select="$background" />
-            <xsl:with-param name="boxStarted" select="$boxStarted" />
-            <xsl:with-param name="buffer" select="$buffer" />
-            <xsl:with-param name="doubleHeight" select="$doubleHeight" />
-            <xsl:with-param name="spanCreated" select="$spanCreated" />
+            <xsl:with-param name="foreground" select="$foreground"/>
+            <xsl:with-param name="background" select="$background"/>
+            <xsl:with-param name="boxStarted" select="$boxStarted"/>
+            <xsl:with-param name="buffer" select="$buffer"/>
+            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>

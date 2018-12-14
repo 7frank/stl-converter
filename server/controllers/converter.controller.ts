@@ -6,7 +6,10 @@ import * as path from "path";
 import * as fs from "fs";
 import * as rimraf from "rimraf";
 
+
 /**
+ *
+ *  FIXME fix performance no files are in the queue but cpu is at 100 pct.
  *
  * Controller that uses the whole work flow from stl => stlxml => backup => ebutt
  *
@@ -17,7 +20,7 @@ import * as rimraf from "rimraf";
  *  TODO only write to filesystem if next transformation step does fail ?
  *
 
- * work flow todo
+ * work flow
  * - we du have a queue
  * - we can add one or more items to the queue
  *      - query for new files within a specified directory and simulate creating them instead for better use case tests
@@ -27,9 +30,24 @@ import * as rimraf from "rimraf";
  * - have a route to add entries
  * - have a route to check state of current queue
  *
- * @param _req
- * @param res
- */
+ *
+ * TODO decouple convert and validate?
+ *      - in case the queue gets too big we could disable the validation to keep up with converting data and could validate them later on
+ * TODO find out how the current file work flow is
+ *      - file is created in folder
+ *      - where does the ebu have to be stored?
+ *      - is the stl file deleted afterwards?
+ *      - FIXME in case the folder is fixed, make sure that a service restart does not reconvert all files once again
+ *
+ **/
+
+
+const simulatedFilesInterval = 50000;// create a test file every 50 seconds
+const emptyQueueIdleTimeout = 5100;
+const inBetweenQueueIdleTimeout = 15100;
+
+
+const fileScanInterval = 2025;
 
 
 const testFiles = [
@@ -44,11 +62,10 @@ let queue = new Queue<string>(...testFiles)
 const temp = path.resolve(__dirname, "../../tests/_temp_src/")
 
 
-//setInterval(, 5050)
-
-
+/**
+ * the main transformation loop. Will go idle for a certain amount if no files need to be converted
+ */
 function transformQueueLoop() {
-
 
 
     //get files from queue TODO
@@ -58,13 +75,13 @@ function transformQueueLoop() {
 
 
     if (inputFiles.length == 0)
-        setTimeout(() => transformQueueLoop(), 5000)
+        setTimeout(() => transformQueueLoop(), emptyQueueIdleTimeout)
     else
         stlebu_next_batch(inputFiles).then(function (values) {
             // const response = newEntries.map((filename, i) => ({result: values[i], filename}))
             console.log("Promises all, resolved:", values)
 
-            transformQueueLoop()
+            setTimeout(() => transformQueueLoop(), inBetweenQueueIdleTimeout)
 
         })
 
@@ -93,21 +110,28 @@ function simulateFiles() {
     }
 
     // copy files every n seconds
-    setInterval(() => {
+
+
+    const copyTempFile = () => {
         //copy files with random names
-        //console.log("add file",temp)
         fs.copyFile(root + '/Test 1.stl', temp + `/Test ${Date.now()}.stl`, (err) => {
             if (err) console.log(err);
-            // console.log('source.txt was copied to destination.txt');
         });
-    }, 1100)
+    }
+
+    setInterval(copyTempFile, simulatedFilesInterval)
+    copyTempFile()
+    setTimeout(copyTempFile, 55)
+   // setTimeout(copyTempFile, 150)
+
+
 
 }
 
+
 simulateFiles()
 transformQueueLoop()
-setInterval(() =>  scanForNewFiles(), 2000)
-
+setInterval(() => scanForNewFiles(), fileScanInterval)
 
 
 // TODO implement from abstract/interface with promise or callback to only fetch file if needed
@@ -128,7 +152,7 @@ function scanForNewFiles() {
 
 
 /**
- * fetch the next batch of files from the queue
+ * convert the next batch of files
  *
  */
 function stlebu_next_batch(inputFiles: Array<string>) {
