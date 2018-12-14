@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path'
 import * as homeController from './controllers/home.controller';
 
-import {addQueueItem, checkQueue} from './controllers/converter.controller';
+import {checkQueue} from './controllers/converter.controller';
 import {queuesSocket} from "./socket/queues";
 
 
@@ -12,6 +12,14 @@ import {queuesSocket} from "./socket/queues";
 dotenv.config();
 
 const app = express();
+
+app.set('view engine', 'ejs');
+
+app.get('/dashboard', function(req, res) {
+    res.render('index');
+});
+
+
 
 app.all('/*', function(req, response, next) {
     response.setHeader("Access-Control-Allow-Origin", "*");
@@ -28,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', homeController.index);
 app.get('/Readme', homeController.readme);
 
-app.get('/stl-ebu-enqueue', addQueueItem);
+
 
 //app.get('/stream', streamTest);
 

@@ -82,6 +82,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
+    "ejs": "^2.6.1",
     "express": "^4.16.2",
     "mississippi": "^3.0.0",
     "pipe-validation-stream": "^1.0.10",
@@ -89,6 +90,7 @@
     "progress-stream": "^2.0.0",
     "python-shell": "^1.0.6",
     "queue-typescript": "^1.0.1",
+    "rimraf": "^2.6.2",
     "saxon-stream2": "0.0.1",
     "showdown": "^1.9.0",
     "socket.io": "^2.2.0",

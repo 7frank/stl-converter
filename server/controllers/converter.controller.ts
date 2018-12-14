@@ -1,38 +1,10 @@
 import * as express from "express";
-import * as fs from "fs";
+import {duplex, finished, pipe, pipeline} from "mississippi";
+import {Queue} from 'queue-typescript';
+import {initialize, transformationPipe, TransformationState, withValidation} from "./transform-utils";
 import * as path from "path";
-
-
-import {stl2stlxml} from "../converter/convert";
-import {xsltstreams} from "../converter/stlxml2ebutt";
-
-import {validate, createXMLValidationStream} from "../converter/validate/validate";
-import {Lower, renderer, Upper, xformer} from "../converter/transform";
-
-
-export function getOrigin(_req: express.Request, path = ""): string {
-    return _req.protocol + '://' + _req.get('host') + path
-
-}
-
-
-import {pipeline, duplex, pipe, finished} from "mississippi";
-
-function createProgressSpyStream(id: string) {
-    const progress = require('progress-stream');
-
-    //const  stat = fs.statSync(filename);
-    const str = progress({
-
-        //  length: stat.size,
-        time: 10 /* ms */
-    });
-    str.on('progress', function (progress) {
-        console.log("id:" + id, progress.percentage);
-    });
-
-    return str
-}
+import * as fs from "fs";
+import * as rimraf from "rimraf";
 
 /**
  *
@@ -44,147 +16,7 @@ function createProgressSpyStream(id: string) {
  *
  *  TODO only write to filesystem if next transformation step does fail ?
  *
- */
 
-
-
-interface STLTransformationResult {
-}
-
-enum TransformationState {
-    none = "none",
-    queued = "queued",
-    progress = "progress",
-    converted = "converted",
-    validated = "validated"
-
-
-}
-
-
-interface Transformation {
-    state: TransformationState;
-    result: STLTransformationResult;
-
-}
-
-
-const transformationPipe: Map<string, TransformationState> = new Map()
-
-
-/**
- * potential use case with validation
- * @param inputFile
- */
-
-const withValidation = inputFile => {
-    return new Promise((resolve, reject) => {
-
-            convertFile(inputFile, function (err) {
-                if (err)
-                    reject(err)
-
-                transformationPipe.set(inputFile, TransformationState.converted)
-
-            }, function (report: any) {
-                resolve(report)
-
-                transformationPipe.set(inputFile, TransformationState.validated)
-
-            })
-        }
-    )
-}
-
-
-/**
- * potential use case without validation
- * @param inputFile
- */
-const withoutValidation = inputFile => {
-    return new Promise((resolve, reject) => {
-
-            convertFile(inputFile, function (err) {
-
-                if (err)
-                    reject(err)
-                else
-                    resolve(err)
-
-                transformationPipe.set(inputFile, TransformationState.converted)
-
-            })
-        }
-    )
-}
-
-
-const initialize = filename => {
-
-    let val = transformationPipe.get(filename)
-
-    if (val === undefined) {
-        val = TransformationState.none
-        transformationPipe.set(filename, val)
-
-    }
-}
-
-
-//const inputFile = "../converter/files/stl/test.stl";
-const testFiles = [
-    "../../tests/stl/Test 1.stl",
-    "../../tests/stl/Test 2.stl",
-    "../../tests/stl/Test 3.stl"
-];
-
-import {Queue} from 'queue-typescript';
-
-let queue = new Queue<string>(...testFiles)
-
-setInterval(() => {
-
-
-    stlebuuuuu()
-
-
-}, 5000)
-
-
-/**
- * copies files from test folder to source folder
- * where the actual
- */
-function simulateFiles()
-{
-
-    // initialize - delete source folder
-
-    const root="."
-
-
-    setInterval(() => {
-
-        //copy files with random names
-
-       console.log("add file")
-
-
-    }, 1000)
-
-}
-simulateFiles()
-
-
-
-// TODO implement from abstract/interface with promise or callback to only fetch file if needed
-function scanForNewFiles()
-{
-    console.log("query for new files")
-    queue.enqueue( "../../tests/stl/Test 1.stl")
-}
-
-/**
  * work flow todo
  * - we du have a queue
  * - we can add one or more items to the queue
@@ -200,24 +32,106 @@ function scanForNewFiles()
  */
 
 
+const testFiles = [
+    // "../../tests/stl/Test 1.stl",
+    // "../../tests/stl/Test 2.stl",
+    // "../../tests/stl/Test 3.stl",
+    // "../converter/files/stl/test.stl"
+];
+
+let queue = new Queue<string>(...testFiles)
+// temp folder for testing
+const temp = path.resolve(__dirname, "../../tests/_temp_src/")
+
+
+//setInterval(, 5050)
+
+
+function transformQueueLoop() {
 
 
 
-export async function addQueueItem(_req: express.Request, res: express.Response) {
+    //get files from queue TODO
+    let inputFiles = [queue.dequeue(), queue.dequeue(), queue.dequeue()]
 
-    scanForNewFiles()
+    inputFiles = inputFiles.filter(v => v)
 
-    res.send("added to queue size:"+queue.length)
-   // res.redirect('/queue')
+
+    if (inputFiles.length == 0)
+        setTimeout(() => transformQueueLoop(), 5000)
+    else
+        stlebu_next_batch(inputFiles).then(function (values) {
+            // const response = newEntries.map((filename, i) => ({result: values[i], filename}))
+            console.log("Promises all, resolved:", values)
+
+            transformQueueLoop()
+
+        })
+
 
 }
 
 
+/**
+ * copies files from test folder to source folder
+ * where the actual
+ */
+function simulateFiles() {
 
-function stlebuuuuu()
-{
-    //get files from queue TODO
-    const inputFiles = [queue.dequeue(), queue.dequeue(), queue.dequeue()]
+    // initialize - delete source folder
+
+    const root = path.resolve(__dirname, "../../tests/stl/")
+
+
+    // delete temp source folder
+    if (fs.existsSync(temp))
+        rimraf.sync(temp);
+
+    // create temp source folder again
+    if (!fs.existsSync(temp)) {
+        fs.mkdirSync(temp, 0o744);
+    }
+
+    // copy files every n seconds
+    setInterval(() => {
+        //copy files with random names
+        //console.log("add file",temp)
+        fs.copyFile(root + '/Test 1.stl', temp + `/Test ${Date.now()}.stl`, (err) => {
+            if (err) console.log(err);
+            // console.log('source.txt was copied to destination.txt');
+        });
+    }, 1100)
+
+}
+
+simulateFiles()
+transformQueueLoop()
+setInterval(() =>  scanForNewFiles(), 2000)
+
+
+
+// TODO implement from abstract/interface with promise or callback to only fetch file if needed
+function scanForNewFiles() {
+
+    fs.readdirSync(temp).forEach(file => {
+
+        const filename = temp + "/" + file
+        if (!transformationPipe.get(filename)) {
+            transformationPipe.set(filename, TransformationState.none)
+            queue.enqueue(filename)
+            console.log("added file to queue: ", filename);
+        }
+    })
+
+
+}
+
+
+/**
+ * fetch the next batch of files from the queue
+ *
+ */
+function stlebu_next_batch(inputFiles: Array<string>) {
 
     // filter only new entries that are not already at least queued
     const newEntries = inputFiles.filter(filename => !transformationPipe.get(filename) || transformationPipe.get(filename) == TransformationState.none)
@@ -225,21 +139,13 @@ function stlebuuuuu()
     newEntries.forEach(filename => transformationPipe.set(filename, TransformationState.queued))
 
 
-
     // execute the stl xml transformation
     const promises = newEntries.map(withValidation)
-    Promise.all(promises).then(function (values) {
-        const response = newEntries.map((filename, i) => ({result: values[i], filename}))
-        console.log("Promise all:", response)
-    })
-
-
+    return Promise.all(promises)
 }
 
 
 export async function checkQueue(_req: express.Request, res: express.Response) {
-
-
 
     // get current state info and return
     const currentStates = Array.from(transformationPipe.keys()).map(filename => {
@@ -248,82 +154,6 @@ export async function checkQueue(_req: express.Request, res: express.Response) {
 
     })
     res.json(currentStates)
-
-
-}
-
-
-async function convertFile(inputFile: string, onFinished: Function, onValidated?: Function) {
-
-
-    const mFilePath = path.resolve(__dirname, inputFile)
-    console.log("stream test: " + mFilePath)
-    if (!fs.existsSync(mFilePath)) {
-
-        throw new Error("File_NOT_FOUND")
-
-    }
-
-    // TODO split into file stream and stl2stlxml stream
-    // const dataStream = fs.createReadStream(mFilePath)
-
-    const dataStream = await stl2stlxml(mFilePath) as any;
-
-
-    // create director
-    const parsedSource = path.parse(mFilePath)
-    const targetPath = path.resolve(parsedSource.dir, "../out/")
-    if (!fs.existsSync(targetPath)) {
-        fs.mkdirSync(targetPath);
-    }
-
-    // map xslt transformations
-    const xsltTransformationStreams = xsltstreams().map(o => {
-
-
-        const parsed = path.parse(o.file)
-        const targetFilename = parsedSource.name + "." + parsed.name + ".xml"
-        const target = path.resolve(targetPath, targetFilename)
-        const writeStream = fs.createWriteStream(target)
-
-
-        const ebuttXSD = `./server/converter/validate/ebutt.xsd`
-
-        o.stream.pipe(createProgressSpyStream(o.id))
-        // .pipe(createXMLValidationStream(ebuttXSD)) //TODO make validation via pipe
-
-            .pipe(writeStream)
-
-
-            .on("finish", function () {
-                console.log('written output')
-                if (o.validate && onValidated) {
-                    console.log('validating result')
-
-
-                    validate(target, ebuttXSD).then(function responseCallback(report: any) {
-
-                        const obj = {
-                            input: mFilePath,
-                            output: target,
-                            valid: report.valid,
-                            messages: report.messages
-                        }
-                        onValidated(obj);
-
-                    }).catch(console.error)//TODO error handling
-                } else console.log('NOT validating result')
-            })
-
-
-        return o.stream
-
-    })
-
-    // pipe all above - and return to client
-    const all = pipe(dataStream, ...xsltTransformationStreams)
-
-    finished(all, onFinished)
 
 
 }

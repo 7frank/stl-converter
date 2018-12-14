@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {getOrigin} from "./converter.controller";
+import {getOrigin} from "./controller-utils";
 import * as fs from "fs"
 import * as path from "path";
 
@@ -9,7 +9,8 @@ export let index = (req: Request, res: Response) => {
     res.json({
         message: 'STL to EBU-TT Converter',
         version: pkg.version,
-        readme: getOrigin(req, "/Readme")
+        readme: getOrigin(req, "/Readme"),
+        dashboard: getOrigin(req, "/dashboard")
     });
 }
 
