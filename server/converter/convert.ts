@@ -36,17 +36,9 @@ async function stl2stlxml(inputFile) {
             "-s"
         ],
         mode: "text",
+        pythonPath : process.env.PYTHONPATH
        //  pythonOptions: ["-u"], // get print results in real-time  // TODO this did result in windows not returning data at all
-
-        // scriptPath: 'path/to/my/scripts'
     };
-
-
-    if (process.platform != "win32")
-        options.pythonPath = "/usr/bin/python"
-    //  else
-    //      options.pythonPath = "C:/Python27/python.EXE"
-
 
     return new Promise((resolve, reject) => {
         // TODO use streams

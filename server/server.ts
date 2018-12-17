@@ -9,11 +9,22 @@ import {queuesSocket} from "./socket/queues";
 import {TransformationState} from "./controllers/transform-utils";
 import Socket = NodeJS.Socket;
 
+let dotFile = process.platform == "win32" ? "windows.env" : "linux.env"
 
-dotenv.config();
-//console.log(jarPath,process.env)
+const result = dotenv.config({path: dotFile});
 
-//process.env.PATH+= ";C:\\Program Files\\Java\\jdk1.8.0_151\\bin;"
+
+if (result.error) {
+    throw result.error
+}
+
+console.log("--------------------")
+console.log(dotFile)
+console.log("--------------------")
+console.log(result.parsed)
+console.log("--------------------")
+console.log(process.env.PATH)
+
 
 const app = express();
 

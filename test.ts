@@ -2,6 +2,12 @@ import {Options, PythonShell} from "python-shell";
 
 const exec = require('child_process').exec;
 
+
+/**
+ * TODO create some environment check that can be run to make sure that depedencies are met
+ */
+
+
 function testJavaInstalled() {
 
     const n = (e) => console.error(e)
