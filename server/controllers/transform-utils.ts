@@ -13,9 +13,8 @@ export enum TransformationState {
     queued = "queued",
     progress = "progress",
     converted = "converted",
-    validated = "validated"
-
-
+    validated = "validated",
+    error ="error"
 }
 
 
@@ -39,8 +38,14 @@ export const withValidation = inputFile => {
     return new Promise((resolve, reject) => {
 
             convertFile(inputFile, function (err) {
-                if (err)
+                if (err) {
+
+
+                    transformationPipe.set(inputFile,TransformationState.error)
+
                     reject(err)
+                    return
+                }
 
                 transformationPipe.set(inputFile, TransformationState.converted)
 
@@ -117,7 +122,18 @@ async function convertFile(inputFile: string, onFinished: Function, onValidated?
     // TODO split into file stream and stl2stlxml stream
     // const dataStream = fs.createReadStream(mFilePath)
 
-    const dataStream = await stl2stlxml(mFilePath) as any;
+
+    const promise=stl2stlxml(mFilePath).catch((e)=>{
+
+        onFinished(e)
+
+
+
+       // console.log(e)
+
+    })
+
+    const dataStream = await promise as any;
 
 
     // create director

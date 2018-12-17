@@ -49,8 +49,16 @@ async function stl2stlxml(inputFile) {
 
         // TODO use streams
         PythonShell.run(pythonScript, options, (err, results) => {
-            if (err) reject(err);
+            if (err) {
+                reject(err);
+                return
+            }
             // results is an array consisting of messages collected during execution
+
+            if (results == null) {
+                reject(new Error("Python shell did not return data."))
+                return
+            }
 
             const dataStream = arrayToReadableStream(results)
 

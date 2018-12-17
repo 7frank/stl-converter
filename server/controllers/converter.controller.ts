@@ -73,7 +73,6 @@ function transformQueueLoop() {
 
     inputFiles = inputFiles.filter(v => v)
 
-
     if (inputFiles.length == 0)
         setTimeout(() => transformQueueLoop(), emptyQueueIdleTimeout)
     else
@@ -165,7 +164,11 @@ function stlebu_next_batch(inputFiles: Array<string>) {
 
 
     // execute the stl xml transformation
-    const promises = newEntries.map(withValidation)
+    let promises = newEntries.map(withValidation)
+
+    promises= promises.map( (p:any) => p.catch(e => console.log(e.message)))
+
+
     return Promise.all(promises)
 }
 

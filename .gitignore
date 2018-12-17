@@ -59,3 +59,5 @@ typings/
 
 dist
 .idea/
+tests/out/
+tests/_temp_src/
