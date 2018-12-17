@@ -2,8 +2,11 @@ import * as path from "path";
 
 
 function XML_via_XSLT_TransformStream(xslPath) {
-    const jarPath = "./saxon99he.jar"
+    let jarPath = "./saxon99he.jar"
     const saxon = require('./saxon-stream2');
+
+    jarPath =path.resolve(__dirname,jarPath)
+
     const xsltStream = saxon(jarPath, xslPath, {timeout: 30000});
     return xsltStream
 

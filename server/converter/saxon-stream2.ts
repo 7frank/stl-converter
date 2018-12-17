@@ -11,6 +11,8 @@ var fs = require('fs'),
 var through2 = require('through2'),
     tmp = require('temporary');
 
+
+
 function saxonStream2(jarPath, xslPath, opt) {
     var buf = [];
     var timeout = 5000;
@@ -41,26 +43,36 @@ function saxonStream2(jarPath, xslPath, opt) {
         // Array.prototype.push.apply(opts,saxonOpts);
         opts = opts.concat(saxonOpts);
 
-        var cmd = exec('java ' + opts.join(' '), {timeout: timeout}, function (err, stdout, stderr) {
-            if (err) return n(err);
-            if (stderr) return n(stderr);
-            if (stdout !== '') {
-                console.log(stdout);
-            }
-        });
 
 
-        cmd.on('exit', function (code, sig) {
-            var cont = fs.readFileSync(result.path);
-            self.push(cont);
-            // Note added callback function as node complained at specific versions
-            result.unlink(function (error) {
-                if (error)
-                    console.log(error)
+            var cmd = exec('java ' + opts.join(' '), {timeout: timeout}, function (err, stdout, stderr) {
+                if (err) return n(err);
+                if (stderr) return n(stderr);
+                if (stdout !== '') {
+                    console.log(stdout);
+                }
             });
-            n();
-        });
+
+
+            cmd.on('exit', function (code, sig) {
+                var cont = fs.readFileSync(result.path);
+                self.push(cont);
+                // Note added callback function as node complained at specific versions
+                result.unlink(function (error) {
+                    if (error)
+                        console.log(error)
+                });
+                n();
+            });
+
+            cmd.on('error', function (err) {
+              return n(err);
+            });
+
+
     });
+
+
 };
 
 module.exports = saxonStream2;

@@ -10,6 +10,9 @@ This project aims to generate a server or cli that converts binary stl files int
 * functional requirements
 * tests
 * validator might fail because of proxy
+* error handling if windows fails for example
+* fix windows python path
+* test for java and python to be installed before starting the queues
 
 
 # milestones
